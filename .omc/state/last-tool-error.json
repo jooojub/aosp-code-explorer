@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"pkill -f \\\"vite\\\" 2>/dev/null; sleep 1\\nnpm run dev &\\nsleep 4 && echo \\\"ready\\\"\",\"description\":\"Restart vite dev server\"}",
+  "error": "Exit code 144",
+  "timestamp": "2026-04-30T06:10:48.025Z",
+  "retry_count": 1
+}

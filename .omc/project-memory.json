@@ -1,0 +1,158 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1777529654663,
+  "projectRoot": "/home/jooojub/Workspace/sdk/aosp/CodeExplorer",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "react",
+        "version": "19.2.5",
+        "category": "frontend"
+      },
+      {
+        "name": "react-dom",
+        "version": "19.2.5",
+        "category": "frontend"
+      },
+      {
+        "name": "vite",
+        "version": "8.0.10",
+        "category": "build"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": null,
+    "lintCommand": "npm run lint",
+    "devCommand": "npm run dev",
+    "scripts": {
+      "dev": "vite",
+      "build": "vite build",
+      "lint": "eslint .",
+      "preview": "vite preview"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": "type-based"
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "public",
+      "src"
+    ],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "public": {
+      "path": "public",
+      "purpose": "Public files",
+      "fileCount": 2,
+      "lastAccessed": 1777529654657,
+      "keyFiles": [
+        "favicon.svg",
+        "icons.svg"
+      ]
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 4,
+      "lastAccessed": 1777529654657,
+      "keyFiles": [
+        "App.css",
+        "App.jsx",
+        "index.css",
+        "main.jsx"
+      ]
+    },
+    "src/assets": {
+      "path": "src/assets",
+      "purpose": "Static assets",
+      "fileCount": 3,
+      "lastAccessed": 1777529654662,
+      "keyFiles": [
+        "hero.png",
+        "react.svg",
+        "vite.svg"
+      ]
+    },
+    "src/components": {
+      "path": "src/components",
+      "purpose": "UI components",
+      "fileCount": 3,
+      "lastAccessed": 1777529654662,
+      "keyFiles": [
+        "ArchMap.jsx",
+        "DetailPanel.jsx",
+        "Sidebar.jsx"
+      ]
+    },
+    "src/data": {
+      "path": "src/data",
+      "purpose": "Data files",
+      "fileCount": 1,
+      "lastAccessed": 1777529654662,
+      "keyFiles": [
+        "cameraData.js"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "src/components/DetailPanel.jsx",
+      "accessCount": 11,
+      "lastAccessed": 1777530608306,
+      "type": "file"
+    },
+    {
+      "path": "src/components/Sidebar.jsx",
+      "accessCount": 9,
+      "lastAccessed": 1777530635705,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ArchMap.jsx",
+      "accessCount": 8,
+      "lastAccessed": 1777530624054,
+      "type": "file"
+    },
+    {
+      "path": "src/App.jsx",
+      "accessCount": 6,
+      "lastAccessed": 1777530571509,
+      "type": "file"
+    },
+    {
+      "path": "src/data/cameraData.js",
+      "accessCount": 3,
+      "lastAccessed": 1777530539061,
+      "type": "file"
+    },
+    {
+      "path": "src/index.css",
+      "accessCount": 2,
+      "lastAccessed": 1777530632656,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}
