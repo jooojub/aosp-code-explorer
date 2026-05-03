@@ -1,20 +1,21 @@
 import { useState } from 'react';
+import { Menu } from 'lucide-react';
 import { NODES } from '../data/cameraData';
 
 const LAYER_ORDER = ['app', 'java', 'native', 'service', 'hal_if', 'hal_impl', 'kernel', 'hw'];
 
 const LAYER_META = {
-  app:      { label: 'Application',          color: '#2da44e' },
-  java:     { label: 'Java API',             color: '#0969da' },
-  native:   { label: 'NDK / Native',         color: '#0550ae' },
-  service:  { label: 'CameraService',        color: '#0550ae' },
-  hal_if:   { label: 'HAL AIDL Interface',   color: '#bf8700' },
-  hal_impl: { label: 'HAL Implementation',   color: '#bc4c00' },
-  kernel:   { label: 'Kernel / Drivers',     color: '#8250df' },
-  hw:       { label: 'Hardware',             color: '#cf222e' },
+  app:      { label: 'Application',          color: '#16a34a' },
+  java:     { label: 'Java API',             color: '#2563eb' },
+  native:   { label: 'NDK / Native',         color: '#4f46e5' },
+  service:  { label: 'CameraService',        color: '#7c3aed' },
+  hal_if:   { label: 'HAL AIDL Interface',   color: '#d97706' },
+  hal_impl: { label: 'HAL Implementation',   color: '#ea580c' },
+  kernel:   { label: 'Kernel / Drivers',     color: '#9333ea' },
+  hw:       { label: 'Hardware',             color: '#dc2626' },
 };
 
-export default function Sidebar({ selectedNode, onNodeClick, search }) {
+export default function Sidebar({ selectedNode, onNodeClick, search, open, onToggle }) {
   const [collapsed, setCollapsed] = useState(new Set());
 
   const toggle = (id) =>
@@ -40,16 +41,42 @@ export default function Sidebar({ selectedNode, onNodeClick, search }) {
     return acc;
   }, {});
 
+  if (!open) {
+    return (
+      <aside
+        className="flex-shrink-0 flex flex-col border-r"
+        style={{ width: 40, borderColor: '#d0d7de', background: '#f6f8fa' }}
+      >
+        <button
+          onClick={onToggle}
+          className="flex items-center justify-center hover:bg-black/5 transition-colors"
+          style={{ width: 40, height: 36, color: '#57606a' }}
+          title="Show sidebar"
+        >
+          <Menu size={15} />
+        </button>
+      </aside>
+    );
+  }
+
   return (
     <aside
       className="w-56 flex-shrink-0 flex flex-col border-r overflow-hidden"
       style={{ borderColor: '#d0d7de', background: '#f6f8fa' }}
     >
       {/* Legend header */}
-      <div className="px-3 py-2 border-b" style={{ borderColor: '#d0d7de' }}>
+      <div className="flex items-center justify-between px-3 py-2 border-b" style={{ borderColor: '#d0d7de' }}>
         <p className="text-xs font-semibold" style={{ color: '#57606a', fontFamily: 'monospace' }}>
           LAYERS
         </p>
+        <button
+          onClick={onToggle}
+          className="flex items-center justify-center rounded hover:bg-black/5 transition-colors"
+          style={{ width: 22, height: 22, color: '#57606a' }}
+          title="Hide sidebar"
+        >
+          <Menu size={13} />
+        </button>
       </div>
 
       {/* Layer groups */}
@@ -94,10 +121,11 @@ export default function Sidebar({ selectedNode, onNodeClick, search }) {
                         className="block w-full text-left px-5 py-1 text-xs truncate transition-colors hover:bg-black/5"
                         style={{
                           fontFamily: 'monospace',
-                          color: isSelected ? node.color : '#57606a',
+                          color: isSelected ? node.color : '#24292f',
                           background: isSelected ? node.color + '18' : 'transparent',
                           borderLeft: isSelected ? `2px solid ${node.color}` : '2px solid transparent',
                           paddingLeft: isSelected ? 18 : 20,
+                          fontWeight: isSelected ? '600' : '400',
                         }}
                       >
                         {node.label}

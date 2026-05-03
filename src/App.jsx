@@ -4,11 +4,54 @@ import ArchMap from './components/ArchMap';
 import Sidebar from './components/Sidebar';
 import DetailPanel from './components/DetailPanel';
 import { NODES, EDGES } from './data/cameraData';
+import { MODULES } from './data/modules';
 import './App.css';
+
+function ModuleTabs({ active, onChange }) {
+  return (
+    <div
+      className="flex-shrink-0 flex items-center gap-1 px-3 border-b"
+      style={{ borderColor: '#d0d7de', background: '#f6f8fa', height: 40 }}
+    >
+      {MODULES.map(mod => {
+        const Icon = mod.icon;
+        const isActive = active === mod.id;
+        return (
+          <button
+            key={mod.id}
+            onClick={() => mod.ready && onChange(mod.id)}
+            className="relative flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all"
+            style={{
+              fontFamily: 'monospace',
+              cursor: mod.ready ? 'pointer' : 'default',
+              background: isActive ? '#ffffff' : 'transparent',
+              color: isActive ? mod.color : mod.ready ? '#57606a' : '#b0b8c1',
+              border: isActive ? `1px solid ${mod.color}44` : '1px solid transparent',
+              boxShadow: isActive ? '0 1px 3px rgba(0,0,0,0.10)' : 'none',
+            }}
+          >
+            <Icon size={12} />
+            {mod.label}
+            {!mod.ready && (
+              <span
+                className="text-xs px-1 rounded"
+                style={{ fontSize: 9, background: '#eaf0f6', color: '#8c959f', fontFamily: 'monospace' }}
+              >
+                soon
+              </span>
+            )}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function App() {
   const [selectedNode, setSelectedNode] = useState(null);
   const [search, setSearch] = useState('');
+  const [activeModule, setActiveModule] = useState('camera');
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const handleNodeClick = (node) => {
     setSelectedNode(prev => prev?.id === node.id ? null : node);
@@ -79,9 +122,18 @@ export default function App() {
         </div>
       </header>
 
+      {/* Module tabs */}
+      <ModuleTabs active={activeModule} onChange={(id) => { setActiveModule(id); setSelectedNode(null); setSearch(''); }} />
+
       {/* Body */}
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar selectedNode={selectedNode} onNodeClick={handleNodeClick} search={search} />
+        <Sidebar
+          selectedNode={selectedNode}
+          onNodeClick={handleNodeClick}
+          search={search}
+          open={sidebarOpen}
+          onToggle={() => setSidebarOpen(v => !v)}
+        />
 
         <main className="flex-1 overflow-hidden relative">
           <ArchMap

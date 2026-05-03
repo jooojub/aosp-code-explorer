@@ -1,391 +1,325 @@
-export const CANVAS_W = 2600;
-export const CANVAS_H = 1440;
-export const NODE_W = 148;
-export const NODE_H = 34;
+export const CANVAS_W = 900;
+export const NODE_W  = 148;
+export const NODE_H  = 34;
+
+const NODES_PER_ROW   = 5;
+const GAP_X           = 12;
+const GAP_Y           = 12;
+const LAYER_PAD_TOP   = 46;
+const LAYER_PAD_BOTTOM= 14;
+export const LEFT_PAD = Math.round((CANVAS_W - (NODES_PER_ROW * (NODE_W + GAP_X) - GAP_X)) / 2);
 
 const C = {
-  app:      '#2da44e',
-  java:     '#0969da',
-  native:   '#0550ae',
-  service:  '#0550ae',
-  hal_if:   '#bf8700',
-  hal_impl: '#bc4c00',
-  kernel:   '#8250df',
-  hw:       '#cf222e',
+  app:      '#16a34a',
+  java:     '#2563eb',
+  native:   '#4f46e5',
+  service:  '#7c3aed',
+  hal_if:   '#d97706',
+  hal_impl: '#ea580c',
+  kernel:   '#9333ea',
+  hw:       '#dc2626',
 };
 
-export const DOMAINS = [
-  { label: 'Client  /  App',      x1: 0,    x2: 620,  cx: 310  },
-  { label: 'NDK  /  Native',      x1: 620,  x2: 1100, cx: 860  },
-  { label: 'System Service',      x1: 1100, x2: 1650, cx: 1375 },
-  { label: 'HAL',                 x1: 1650, x2: 2060, cx: 1855 },
-  { label: 'Kernel  /  Hardware', x1: 2060, x2: 2600, cx: 2330 },
-];
+const LAYER_ORDER = ['app','java','native','service','hal_if','hal_impl','kernel','hw'];
 
-export const LAYERS = [
-  { id:'app',      name:'Application',                                        y:18,   height:120, color:C.app,      bg:'rgba(45,164,78,0.07)'   },
-  { id:'java',     name:'Java API  •  android.hardware.camera2',              y:156,  height:200, color:C.java,     bg:'rgba(9,105,218,0.07)'   },
-  { id:'native',   name:'NDK  /  Native Client  •  libcamera2ndk + libcamera',y:374, height:130, color:C.native,   bg:'rgba(5,80,174,0.07)'    },
-  { id:'service',  name:'CameraService  •  libcameraservice',                 y:522,  height:230, color:C.service,  bg:'rgba(5,80,174,0.07)'    },
-  { id:'hal_if',   name:'HAL AIDL Interface  •  android.hardware.camera',     y:770,  height:130, color:C.hal_if,   bg:'rgba(191,135,0,0.07)'   },
-  { id:'hal_impl', name:'HAL Implementation',                                 y:918,  height:130, color:C.hal_impl, bg:'rgba(188,76,0,0.07)'    },
-  { id:'kernel',   name:'Linux Kernel  •  Drivers',                           y:1066, height:200, color:C.kernel,   bg:'rgba(130,80,223,0.07)'  },
-  { id:'hw',       name:'Hardware',                                            y:1284, height:130, color:C.hw,       bg:'rgba(207,34,46,0.07)'   },
-];
+const LAYER_DEFS = {
+  app:      { name:'Application',                                         color:C.app,      bg:'#f0fdf4' },
+  java:     { name:'Java API  •  android.hardware.camera2',               color:C.java,     bg:'#eff6ff' },
+  native:   { name:'NDK  /  Native Client  •  libcamera2ndk + libcamera', color:C.native,   bg:'#eef2ff' },
+  service:  { name:'CameraService  •  libcameraservice',                  color:C.service,  bg:'#f5f3ff' },
+  hal_if:   { name:'HAL AIDL Interface  •  android.hardware.camera',      color:C.hal_if,   bg:'#fffbeb' },
+  hal_impl: { name:'HAL Implementation',                                  color:C.hal_impl, bg:'#fff7ed' },
+  kernel:   { name:'Linux Kernel  •  Drivers',                            color:C.kernel,   bg:'#faf5ff' },
+  hw:       { name:'Hardware',                                             color:C.hw,       bg:'#fef2f2' },
+};
 
-export const NODES = [
-  // ── Application ─────────────────────────────────────────────────────────
-  {
-    id:'cam2_app', label:'Camera2 App', layer:'app', x:60, y:61,
+const NODE_DEFS = [
+  // ── Application ──────────────────────────────────────────────────────────
+  { id:'cam2_app',      label:'Camera2 App',          layer:'app',
     path:'packages/apps/Camera2',
     files:['CameraActivity.java','CaptureModule.java','CaptureActivity.java','CameraModule.java','FocusOverlayManager.java'],
     description:'Primary AOSP camera application. Implements photo, video, and panorama modes using the android.hardware.camera2 Java API.',
-    color:C.app,
-  },
-  {
-    id:'legacy_app', label:'LegacyCamera', layer:'app', x:228, y:61,
+    color:C.app },
+  { id:'legacy_app',    label:'LegacyCamera',          layer:'app',
     path:'packages/apps/LegacyCamera',
     files:['Camera.java','VideoCamera.java','PhotoModule.java'],
     description:'Legacy camera application using the deprecated Camera API. Kept for compatibility testing.',
-    color:C.app,
-  },
-  {
-    id:'dev_app', label:'DevCamera', layer:'app', x:396, y:61,
+    color:C.app },
+  { id:'dev_app',       label:'DevCamera',             layer:'app',
     path:'packages/apps/DevCamera',
     files:['DevCamera.java'],
     description:'Developer-facing camera diagnostics and test application.',
-    color:C.app,
-  },
-  {
-    id:'thirdparty', label:'3rd-party App', layer:'app', x:564, y:61,
-    path:'',
-    files:[],
+    color:C.app },
+  { id:'thirdparty',    label:'3rd-party App',         layer:'app',
+    path:'', files:[],
     description:'Any third-party Android application using the android.hardware.camera2 Java API or CameraX Jetpack library.',
-    color:C.app,
-  },
-  {
-    id:'ndk_app', label:'NDK Camera App', layer:'app', x:750, y:61,
+    color:C.app },
+  { id:'ndk_app',       label:'NDK Camera App',        layer:'app',
     path:'frameworks/av/camera/ndk',
     files:['NdkCameraManager.cpp','NdkCameraDevice.cpp'],
     description:'C/C++ native application using the ACameraManager_* NDK API (libcamera2ndk). Avoids JVM overhead for latency-sensitive use cases.',
-    color:C.app,
-  },
+    color:C.app },
 
-  // ── Java API ─────────────────────────────────────────────────────────────
-  {
-    id:'cam_mgr', label:'CameraManager', layer:'java', x:60, y:168,
+  // ── Java API ──────────────────────────────────────────────────────────────
+  { id:'cam_mgr',       label:'CameraManager',         layer:'java',
     path:'frameworks/base/core/java/android/hardware/camera2',
     files:['CameraManager.java'],
     description:'Top-level system service wrapper. Enumerates available cameras, opens a CameraDevice, registers availability/access-priority callbacks.',
-    color:C.java,
-  },
-  {
-    id:'cam_dev', label:'CameraDevice', layer:'java', x:228, y:168,
+    color:C.java },
+  { id:'cam_dev',       label:'CameraDevice',          layer:'java',
     path:'frameworks/base/core/java/android/hardware/camera2',
     files:['CameraDevice.java','impl/CameraDeviceImpl.java'],
     description:'Represents an open connection to a physical camera. Creates CameraCaptureSessions and submits CaptureRequests.',
-    color:C.java,
-  },
-  {
-    id:'cam_dev_impl', label:'CameraDeviceImpl', layer:'java', x:396, y:168,
+    color:C.java },
+  { id:'cam_dev_impl',  label:'CameraDeviceImpl',      layer:'java',
     path:'frameworks/base/core/java/android/hardware/camera2/impl',
     files:['CameraDeviceImpl.java','CameraDeviceSetupImpl.java'],
     description:'Concrete implementation of CameraDevice. Communicates with CameraDeviceClient in CameraService via Binder IPC.',
-    color:C.java,
-  },
-  {
-    id:'cam_sess', label:'CameraCaptureSession', layer:'java', x:60, y:214,
+    color:C.java },
+  { id:'cam_sess',      label:'CameraCaptureSession',  layer:'java',
     path:'frameworks/base/core/java/android/hardware/camera2',
     files:['CameraCaptureSession.java','CameraConstrainedHighSpeedCaptureSession.java'],
     description:'Configured capture session with a set of output Surfaces. Submits single or repeating CaptureRequests to the camera pipeline.',
-    color:C.java,
-  },
-  {
-    id:'cap_req', label:'CaptureRequest', layer:'java', x:228, y:214,
+    color:C.java },
+  { id:'cap_req',       label:'CaptureRequest',        layer:'java',
     path:'frameworks/base/core/java/android/hardware/camera2',
     files:['CaptureRequest.java'],
     description:'Immutable package of capture parameters (exposure, ISO, focus, flash, output targets) for a single image capture operation.',
-    color:C.java,
-  },
-  {
-    id:'cap_result', label:'CaptureResult', layer:'java', x:396, y:214,
+    color:C.java },
+  { id:'cap_result',    label:'CaptureResult',         layer:'java',
     path:'frameworks/base/core/java/android/hardware/camera2',
     files:['CaptureResult.java','TotalCaptureResult.java','CaptureFailure.java'],
     description:'Per-frame metadata returned after a capture: actual AE/AF/AWB state, sensor timestamp, lens position, and output buffer timestamps.',
-    color:C.java,
-  },
-  {
-    id:'cam_char', label:'CameraCharacteristics', layer:'java', x:60, y:260,
+    color:C.java },
+  { id:'cam_char',      label:'CameraCharacteristics', layer:'java',
     path:'frameworks/base/core/java/android/hardware/camera2',
     files:['CameraCharacteristics.java','CameraMetadata.java'],
     description:'Static properties of a camera device: sensor physical size, supported formats/sizes, capabilities, AE/AF/AWB modes, and lens info.',
-    color:C.java,
-  },
-  {
-    id:'cam_ext_sess', label:'CameraExtensionSession', layer:'java', x:228, y:260,
+    color:C.java },
+  { id:'cam_ext_sess',  label:'CameraExtensionSession',layer:'java',
     path:'frameworks/base/core/java/android/hardware/camera2',
     files:['CameraExtensionSession.java','CameraExtensionCharacteristics.java'],
     description:'Capture session that enables OEM/vendor processing extensions: Night mode, HDR, Bokeh, Face Retouch, Auto White Balance tuning.',
-    color:C.java,
-  },
-  {
-    id:'cam_offline', label:'CameraOfflineSession', layer:'java', x:396, y:260,
+    color:C.java },
+  { id:'cam_offline',   label:'CameraOfflineSession',  layer:'java',
     path:'frameworks/base/core/java/android/hardware/camera2',
     files:['CameraOfflineSession.java'],
     description:'Allows in-flight capture requests to complete after the camera device is closed, enabling low-power offline post-processing.',
-    color:C.java,
-  },
+    color:C.java },
 
   // ── NDK / Native ──────────────────────────────────────────────────────────
-  {
-    id:'ndk_mgr', label:'NdkCameraManager', layer:'native', x:640, y:386,
+  { id:'ndk_mgr',       label:'NdkCameraManager',  layer:'native',
     path:'frameworks/av/camera/ndk',
     files:['NdkCameraManager.cpp','include/camera/NdkCameraManager.h'],
     description:'NDK entry point (ACameraManager). Enumerates cameras and opens NdkCameraDevice. Wraps the native libcamera Binder proxy.',
-    color:C.native,
-  },
-  {
-    id:'ndk_dev', label:'NdkCameraDevice', layer:'native', x:808, y:386,
+    color:C.native },
+  { id:'ndk_dev',       label:'NdkCameraDevice',   layer:'native',
     path:'frameworks/av/camera/ndk',
     files:['NdkCameraDevice.cpp','include/camera/NdkCameraDevice.h'],
     description:'NDK camera device (ACameraDevice). Creates NdkCameraCaptureSession and submits ACaptureRequests from C/C++ code.',
-    color:C.native,
-  },
-  {
-    id:'ndk_sess', label:'NdkCaptureSession', layer:'native', x:976, y:386,
+    color:C.native },
+  { id:'ndk_sess',      label:'NdkCaptureSession', layer:'native',
     path:'frameworks/av/camera/ndk',
     files:['NdkCameraCaptureSession.cpp','include/camera/NdkCameraCaptureSession.h'],
     description:'NDK capture session (ACameraCaptureSession). Submits requests and receives results entirely in native C/C++ code without JVM.',
-    color:C.native,
-  },
-  {
-    id:'cam_cpp', label:'Camera.cpp', layer:'native', x:640, y:432,
+    color:C.native },
+  { id:'cam_cpp',       label:'Camera.cpp',        layer:'native',
     path:'frameworks/av/camera',
     files:['Camera.cpp','CameraBase.cpp','ICameraClient.cpp'],
     description:'Native Binder proxy to CameraService (libcamera). Used internally by NDK and the Java JNI bridge layer.',
-    color:C.native,
-  },
-  {
-    id:'cam_meta_cpp', label:'CameraMetadata', layer:'native', x:808, y:432,
+    color:C.native },
+  { id:'cam_meta_cpp',  label:'CameraMetadata',    layer:'native',
     path:'frameworks/av/camera',
     files:['CameraMetadata.cpp','CameraParameters2.cpp','VendorTagDescriptor.cpp'],
     description:'Native C++ helper for reading and writing HAL-level camera metadata key-value pairs. Serializes metadata between service and HAL.',
-    color:C.native,
-  },
+    color:C.native },
 
   // ── CameraService ─────────────────────────────────────────────────────────
-  {
-    id:'cam_svc', label:'CameraService', layer:'service', x:1120, y:534,
+  { id:'cam_svc',        label:'CameraService',        layer:'service',
     path:'frameworks/av/services/camera/libcameraservice',
     files:['CameraService.cpp','CameraService.h','CameraServiceWatchdog.cpp'],
     description:'System Binder service running in the cameraserver process. Manages device lifecycle, client arbitration, permission checks, and flashlight control.',
-    color:C.service,
-  },
-  {
-    id:'cam_dev_client', label:'CameraDeviceClient', layer:'service', x:1288, y:534,
+    color:C.service },
+  { id:'cam_dev_client', label:'CameraDeviceClient',   layer:'service',
     path:'frameworks/av/services/camera/libcameraservice/api2',
     files:['CameraDeviceClient.cpp','CameraDeviceClient.h','CameraOfflineSessionClient.cpp'],
     description:'Server-side Camera2 API session handler. Translates Java/NDK CaptureRequests into HAL stream configurations and buffer queues.',
-    color:C.service,
-  },
-  {
-    id:'cam3_dev', label:'Camera3Device', layer:'service', x:1456, y:534,
+    color:C.service },
+  { id:'cam3_dev',       label:'Camera3Device',        layer:'service',
     path:'frameworks/av/services/camera/libcameraservice/device3',
     files:['Camera3Device.cpp','Camera3Device.h'],
     description:'HAL3 device abstraction layer. Manages the request/result pipeline, enforces ordering, handles partial results and error recovery.',
-    color:C.service,
-  },
-  {
-    id:'cam3_stream', label:'Camera3OutputStream', layer:'service', x:1120, y:580,
+    color:C.service },
+  { id:'cam3_stream',    label:'Camera3OutputStream',  layer:'service',
     path:'frameworks/av/services/camera/libcameraservice/device3',
     files:['Camera3OutputStream.cpp','Camera3InputStream.cpp','Camera3IOStreamBase.cpp'],
     description:'Represents an output stream (preview Surface, ImageReader, MediaRecorder) backed by an ANativeWindow. Manages gralloc buffer lifecycle.',
-    color:C.service,
-  },
-  {
-    id:'cam3_bufmgr', label:'Camera3BufferMgr', layer:'service', x:1288, y:580,
+    color:C.service },
+  { id:'cam3_bufmgr',    label:'Camera3BufferMgr',     layer:'service',
     path:'frameworks/av/services/camera/libcameraservice/device3',
     files:['Camera3BufferManager.cpp','Camera3BufferManager.h'],
     description:'Manages gralloc buffer allocation, import, and recycling for camera output streams. Coordinates buffer sharing across multiple streams.',
-    color:C.service,
-  },
-  {
-    id:'cam_prov_mgr', label:'CameraProviderManager', layer:'service', x:1456, y:580,
+    color:C.service },
+  { id:'cam_prov_mgr',   label:'CameraProviderMgr',    layer:'service',
     path:'frameworks/av/services/camera/libcameraservice/common',
     files:['CameraProviderManager.cpp','CameraProviderManager.h'],
     description:'Discovers and manages camera HAL providers via ICameraProvider AIDL. Handles HAL process death/restart and multi-provider scenarios.',
-    color:C.service,
-  },
-  {
-    id:'cam_flash', label:'CameraFlashlight', layer:'service', x:1120, y:626,
+    color:C.service },
+  { id:'cam_flash',      label:'CameraFlashlight',     layer:'service',
     path:'frameworks/av/services/camera/libcameraservice',
     files:['CameraFlashlight.cpp','CameraFlashlight.h'],
     description:'Independent torch/flashlight control. Allows torch-mode access without opening a full camera session (requires HAL support).',
-    color:C.service,
-  },
-  {
-    id:'virt_cam_svc', label:'VirtualCameraService', layer:'service', x:1288, y:626,
+    color:C.service },
+  { id:'virt_cam_svc',   label:'VirtualCameraService', layer:'service',
     path:'frameworks/av/services/camera/virtualcamera',
     files:['VirtualCameraProvider.cc','VirtualCameraDevice.cc','VirtualCameraCaptureResultConsumer.cc'],
     description:'Virtual camera HAL service backed by an ANativeWindow Surface. Enables screen-capture cameras, virtual conferencing devices, and injection testing.',
-    color:C.service,
-  },
-  {
-    id:'cam_ext_proxy', label:'CameraExtProxy', layer:'service', x:1456, y:626,
+    color:C.service },
+  { id:'cam_ext_proxy',  label:'CameraExtProxy',       layer:'service',
     path:'frameworks/base/packages/services/CameraExtensionsProxy',
     files:['CameraExtensionsService.java'],
     description:'Proxy service that routes CameraExtensionSession requests from the framework to the appropriate OEM vendor extension implementation.',
-    color:C.service,
-  },
+    color:C.service },
 
   // ── HAL AIDL Interface ────────────────────────────────────────────────────
-  {
-    id:'i_cam_prov', label:'ICameraProvider', layer:'hal_if', x:1670, y:782,
+  { id:'i_cam_prov',    label:'ICameraProvider',        layer:'hal_if',
     path:'hardware/interfaces/camera/provider/aidl',
     files:['ICameraProvider.aidl','ICameraProviderCallback.aidl','ConcurrentCameraIdCombination.aidl'],
     description:'AIDL interface for a camera HAL provider. Enumerates camera devices, provides ICameraDevice handles, and notifies status changes to the framework.',
-    color:C.hal_if,
-  },
-  {
-    id:'i_cam_dev', label:'ICameraDevice', layer:'hal_if', x:1838, y:782,
+    color:C.hal_if },
+  { id:'i_cam_dev',     label:'ICameraDevice',          layer:'hal_if',
     path:'hardware/interfaces/camera/device/aidl',
     files:['ICameraDevice.aidl'],
     description:'AIDL interface for a single camera device. Provides static metadata (CameraCharacteristics) and opens an ICameraDeviceSession for streaming.',
-    color:C.hal_if,
-  },
-  {
-    id:'i_cam_sess', label:'ICameraDeviceSession', layer:'hal_if', x:1670, y:828,
+    color:C.hal_if },
+  { id:'i_cam_sess',    label:'ICameraDeviceSession',   layer:'hal_if',
     path:'hardware/interfaces/camera/device/aidl',
     files:['ICameraDeviceSession.aidl','ICameraInjectionSession.aidl'],
     description:'AIDL interface for an active camera streaming session. Configures output streams, submits capture requests, and manages the HAL buffer queue.',
-    color:C.hal_if,
-  },
-  {
-    id:'i_cam_cb', label:'ICameraDeviceCallback', layer:'hal_if', x:1838, y:828,
+    color:C.hal_if },
+  { id:'i_cam_cb',      label:'ICameraDeviceCallback',  layer:'hal_if',
     path:'hardware/interfaces/camera/device/aidl',
     files:['ICameraDeviceCallback.aidl','ICameraOfflineSession.aidl'],
     description:'HAL-to-framework callback interface: notify shutter, notify error, processCaptureResult. Delivers completed image buffers and metadata back to CameraService.',
-    color:C.hal_if,
-  },
+    color:C.hal_if },
 
   // ── HAL Implementation ────────────────────────────────────────────────────
-  {
-    id:'gcam_hal', label:'Google Camera HAL', layer:'hal_impl', x:1670, y:930,
+  { id:'gcam_hal',      label:'Google Camera HAL', layer:'hal_impl',
     path:'hardware/google/camera/common/hal/google_camera_hal',
     files:['camera_provider.cc','camera_device.cc','camera_device_session.cc','basic_capture_session.cc','basic_request_processor.cc'],
     description:'Reference Camera HAL3 implementation by Google. Implements ICameraProvider/ICameraDevice/ICameraDeviceSession. Handles request processing, result merging, and stream routing.',
-    color:C.hal_impl,
-  },
-  {
-    id:'usb_hal', label:'USB Camera HAL', layer:'hal_impl', x:1838, y:930,
+    color:C.hal_impl },
+  { id:'usb_hal',       label:'USB Camera HAL',     layer:'hal_impl',
     path:'hardware/libhardware/modules/usbcamera',
     files:['CameraHAL.cpp','UsbCamera.cpp','HotplugThread.cpp','Metadata.cpp'],
     description:'HAL implementation for UVC-compliant USB cameras. Detects hotplug via HotplugThread and reads MJPEG/YUV frames through V4L2 ioctls.',
-    color:C.hal_impl,
-  },
-  {
-    id:'legacy_hal', label:'Legacy HAL (3.x)', layer:'hal_impl', x:2006, y:930,
+    color:C.hal_impl },
+  { id:'legacy_hal',    label:'Legacy HAL (3.x)',   layer:'hal_impl',
     path:'hardware/libhardware/modules/camera',
     files:['3_0/Camera3.cpp','3_4/Camera3.cpp'],
     description:'Legacy HAL3.0/3.4 skeleton implementation used as a base template for older SoC vendor HAL ports.',
-    color:C.hal_impl,
-  },
-  {
-    id:'virt_hal', label:'Virtual Camera HAL', layer:'hal_impl', x:1670, y:976,
+    color:C.hal_impl },
+  { id:'virt_hal',      label:'Virtual Camera HAL', layer:'hal_impl',
     path:'frameworks/av/services/camera/virtualcamera',
     files:['VirtualCameraProvider.cc','VirtualCameraDevice.cc'],
     description:'Virtual camera HAL backed by a Surface producer. Injects synthetic frames into the pipeline for testing, screen-sharing, and virtual device scenarios.',
-    color:C.hal_impl,
-  },
-  {
-    id:'oem_hal', label:'OEM / Vendor HAL', layer:'hal_impl', x:1838, y:976,
-    path:'vendor/',
-    files:['(vendor-specific)'],
+    color:C.hal_impl },
+  { id:'oem_hal',       label:'OEM / Vendor HAL',   layer:'hal_impl',
+    path:'vendor/', files:['(vendor-specific)'],
     description:'SoC/OEM-specific camera HAL implementing ICameraProvider and ICameraDeviceSession for proprietary sensor and ISP pipelines (Qualcomm, Samsung, MediaTek, etc.).',
-    color:C.hal_impl,
-  },
+    color:C.hal_impl },
 
   // ── Kernel / Drivers ──────────────────────────────────────────────────────
-  {
-    id:'v4l2', label:'V4L2', layer:'kernel', x:2070, y:1078,
+  { id:'v4l2',          label:'V4L2',              layer:'kernel',
     path:'kernel/drivers/media/v4l2-core',
     files:['v4l2-dev.c','v4l2-ioctl.c','v4l2-device.c','videobuf2-core.c'],
     description:'Video for Linux 2 kernel subsystem. Provides /dev/videoX device nodes and the VIDIOC_* ioctl interface consumed by camera HALs to control sensors and capture frames.',
-    color:C.kernel,
-  },
-  {
-    id:'media_ctl', label:'Media Controller', layer:'kernel', x:2238, y:1078,
+    color:C.kernel },
+  { id:'media_ctl',     label:'Media Controller',  layer:'kernel',
     path:'kernel/drivers/media',
     files:['media-device.c','media-entity.c','media-request.c'],
     description:'Kernel media controller framework. Models the camera pipeline as a graph (sensor → ISP → output). Configures routing between V4L2 subdevices via MEDIA_IOC_SETUP_LINK.',
-    color:C.kernel,
-  },
-  {
-    id:'sensor_drv', label:'Sensor Driver', layer:'kernel', x:2070, y:1124,
+    color:C.kernel },
+  { id:'sensor_drv',    label:'Sensor Driver',     layer:'kernel',
     path:'kernel/drivers/media/i2c',
     files:['(e.g. imx766.c, s5k2l7.c)'],
     description:'Camera image sensor kernel driver. Configures sensor registers over I2C (exposure, gain, framerate, resolution), sets streaming mode, and produces MIPI CSI-2 RAW data.',
-    color:C.kernel,
-  },
-  {
-    id:'isp_drv', label:'ISP Driver', layer:'kernel', x:2238, y:1124,
+    color:C.kernel },
+  { id:'isp_drv',       label:'ISP Driver',        layer:'kernel',
     path:'kernel/drivers/media/platform',
     files:['(SoC-specific, e.g. mtk-isp/, qcom-isp/)'],
     description:'Image Signal Processor kernel driver. Programs ISP registers for demosaic, noise reduction, HDR merge, lens shading correction, and 3A statistics (AE/AF/AWB).',
-    color:C.kernel,
-  },
-  {
-    id:'flash_drv', label:'Flash Driver', layer:'kernel', x:2070, y:1170,
+    color:C.kernel },
+  { id:'flash_drv',     label:'Flash Driver',      layer:'kernel',
     path:'kernel/drivers/leds',
     files:['leds-aw36515.c','leds-ktd2692.c','leds-s2mu107.c'],
     description:'Flash/torch LED kernel driver. Controls flash intensity and strobe timing via I2C or GPIO. Registers as a V4L2 flash subdevice for synchronized capture.',
-    color:C.kernel,
-  },
-  {
-    id:'lens_drv', label:'Lens Actuator Drv', layer:'kernel', x:2238, y:1170,
+    color:C.kernel },
+  { id:'lens_drv',      label:'Lens Actuator Drv', layer:'kernel',
     path:'kernel/drivers/media/i2c',
     files:['dw9763.c','ak7375.c','lc898217.c'],
     description:'Voice Coil Motor (VCM) lens actuator kernel driver. Moves the lens to achieve auto-focus by adjusting coil current via I2C. Exposes position via V4L2 controls.',
-    color:C.kernel,
-  },
+    color:C.kernel },
 
   // ── Hardware ──────────────────────────────────────────────────────────────
-  {
-    id:'cmos_sensor', label:'CMOS Image Sensor', layer:'hw', x:2070, y:1296,
-    path:'',
-    files:[],
+  { id:'cmos_sensor',   label:'CMOS Image Sensor', layer:'hw',
+    path:'', files:[],
     description:'Physical CMOS image sensor (e.g., Sony IMX766, Samsung GN2). Converts photons to analog signal, digitizes to RAW Bayer data, and outputs pixels over MIPI CSI-2 lanes.',
-    color:C.hw,
-  },
-  {
-    id:'isp_chip', label:'ISP Chip', layer:'hw', x:2238, y:1296,
-    path:'',
-    files:[],
+    color:C.hw },
+  { id:'isp_chip',      label:'ISP Chip',          layer:'hw',
+    path:'', files:[],
     description:'Dedicated or integrated Image Signal Processor. Performs demosaicing, multi-frame NR, HDR, tone mapping, lens shading correction, and outputs YUV/JPEG frames.',
-    color:C.hw,
-  },
-  {
-    id:'lens_vcm', label:'Lens + VCM', layer:'hw', x:2070, y:1342,
-    path:'',
-    files:[],
+    color:C.hw },
+  { id:'lens_vcm',      label:'Lens + VCM',        layer:'hw',
+    path:'', files:[],
     description:'Optical lens assembly with Voice Coil Motor actuator. Physically moves lens groups for optical auto-focus (OAF) and Optical Image Stabilization (OIS).',
-    color:C.hw,
-  },
-  {
-    id:'flash_led', label:'Flash LED', layer:'hw', x:2238, y:1342,
-    path:'',
-    files:[],
+    color:C.hw },
+  { id:'flash_led',     label:'Flash LED',         layer:'hw',
+    path:'', files:[],
     description:'High-intensity dual-tone LED flash module. Provides illumination for still photo capture and continuous low-intensity torch for video.',
-    color:C.hw,
-  },
-  {
-    id:'mipi_phy', label:'MIPI CSI-2 PHY', layer:'hw', x:2406, y:1342,
-    path:'',
-    files:[],
+    color:C.hw },
+  { id:'mipi_phy',      label:'MIPI CSI-2 PHY',   layer:'hw',
+    path:'', files:[],
     description:'Physical layer interface for the MIPI CSI-2 serial bus. Transports RAW pixel data from the image sensor to the ISP at multi-Gbps bandwidth over differential lanes.',
-    color:C.hw,
-  },
+    color:C.hw },
 ];
+
+function computeLayout(nodeDefs) {
+  const countByLayer = {};
+  for (const n of nodeDefs) countByLayer[n.layer] = (countByLayer[n.layer] || 0) + 1;
+
+  let currentY = 0;
+  const layerArr = [];
+  const layerYMap = {};
+  for (const id of LAYER_ORDER) {
+    const count = countByLayer[id] || 0;
+    const rows = Math.max(1, Math.ceil(count / NODES_PER_ROW));
+    const height = LAYER_PAD_TOP + rows * NODE_H + (rows - 1) * GAP_Y + LAYER_PAD_BOTTOM;
+    layerYMap[id] = currentY;
+    layerArr.push({ id, ...LAYER_DEFS[id], y: currentY, height });
+    currentY += height;
+  }
+
+  const idxByLayer = {};
+  const positionedNodes = nodeDefs.map(n => {
+    const idx = idxByLayer[n.layer] || 0;
+    idxByLayer[n.layer] = idx + 1;
+    const col = idx % NODES_PER_ROW;
+    const row = Math.floor(idx / NODES_PER_ROW);
+    return {
+      ...n,
+      x: LEFT_PAD + col * (NODE_W + GAP_X),
+      y: layerYMap[n.layer] + LAYER_PAD_TOP + row * (NODE_H + GAP_Y),
+    };
+  });
+
+  return { layers: layerArr, nodes: positionedNodes, totalH: currentY };
+}
+
+const _layout = computeLayout(NODE_DEFS);
+export const LAYERS  = _layout.layers;
+export const NODES   = _layout.nodes;
+export const CANVAS_H = _layout.totalH;
 
 export const EDGES = [
   // ── Main capture flow (important) ────────────────────────────────────────

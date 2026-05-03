@@ -3,14 +3,14 @@ import { X, Folder, File, ArrowRight, ArrowLeft, Link } from 'lucide-react';
 import { NODES, EDGES, LAYERS } from '../data/cameraData';
 
 const LAYER_META = {
-  app:      { label: 'Application',         color: '#2da44e' },
-  java:     { label: 'Java API',            color: '#0969da' },
-  native:   { label: 'NDK / Native',        color: '#0550ae' },
-  service:  { label: 'CameraService',       color: '#0550ae' },
-  hal_if:   { label: 'HAL AIDL Interface',  color: '#bf8700' },
-  hal_impl: { label: 'HAL Implementation',  color: '#bc4c00' },
-  kernel:   { label: 'Kernel / Drivers',    color: '#8250df' },
-  hw:       { label: 'Hardware',            color: '#cf222e' },
+  app:      { label: 'Application',         color: '#16a34a' },
+  java:     { label: 'Java API',            color: '#2563eb' },
+  native:   { label: 'NDK / Native',        color: '#4f46e5' },
+  service:  { label: 'CameraService',       color: '#7c3aed' },
+  hal_if:   { label: 'HAL AIDL Interface',  color: '#d97706' },
+  hal_impl: { label: 'HAL Implementation',  color: '#ea580c' },
+  kernel:   { label: 'Kernel / Drivers',    color: '#9333ea' },
+  hw:       { label: 'Hardware',            color: '#dc2626' },
 };
 
 function Section({ title, children }) {
