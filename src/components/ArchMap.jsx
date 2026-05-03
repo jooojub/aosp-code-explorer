@@ -110,7 +110,7 @@ function NodeBox({ node, isSelected, isConnected, isHovered, hasSelection, onCli
 
 // ─── Minimap ──────────────────────────────────────────────────────────────────
 
-function Minimap({ transform, svgW, svgH, nodes, onApplyTransform }) {
+function Minimap({ transform, svgW, svgH, nodes, onApplyTransform, onFit }) {
   const mmH = CANVAS_H > 0 ? Math.round(MINIMAP_W * CANVAS_H / CANVAS_W) : 200;
   const ms = MINIMAP_W / CANVAS_W;
 
@@ -183,10 +183,23 @@ function Minimap({ transform, svgW, svgH, nodes, onApplyTransform }) {
       <div style={{
         padding: '3px 8px',
         borderBottom: '1px solid #d0d7de',
-        fontSize: 9, fontFamily: 'monospace',
-        color: '#57606a', fontWeight: 700, letterSpacing: '0.08em',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
-        MINIMAP
+        <span style={{ fontSize: 9, fontFamily: 'monospace', color: '#57606a', fontWeight: 700, letterSpacing: '0.08em' }}>
+          MINIMAP
+        </span>
+        <button
+          onClick={onFit}
+          className="hover:bg-black/5 rounded transition-colors"
+          style={{
+            fontSize: 9, fontFamily: 'monospace', color: '#2563eb',
+            padding: '1px 5px', border: '1px solid #2563eb33',
+            borderRadius: 4, lineHeight: 1.6, cursor: 'pointer',
+            background: '#2563eb0d',
+          }}
+        >
+          Fit
+        </button>
       </div>
       <svg
         ref={svgRef}
@@ -393,6 +406,7 @@ export default function ArchMap({ nodes, edges, selectedNode, onNodeClick }) {
           svgW={svgSize.w} svgH={svgSize.h}
           nodes={nodes}
           onApplyTransform={handleApplyTransform}
+          onFit={resetZoom}
         />
       </div>
     </div>
