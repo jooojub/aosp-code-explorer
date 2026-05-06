@@ -119,6 +119,12 @@
   },
   "hotPaths": [
     {
+      "path": "src/data/cameraData.js",
+      "accessCount": 7,
+      "lastAccessed": 1778036539965,
+      "type": "file"
+    },
+    {
       "path": "src",
       "accessCount": 4,
       "lastAccessed": 1778035969317,
@@ -158,12 +164,6 @@
       "path": "src/components/DetailPanel.jsx",
       "accessCount": 3,
       "lastAccessed": 1778035965547,
-      "type": "file"
-    },
-    {
-      "path": "src/data/cameraData.js",
-      "accessCount": 2,
-      "lastAccessed": 1778035965307,
       "type": "file"
     },
     {
