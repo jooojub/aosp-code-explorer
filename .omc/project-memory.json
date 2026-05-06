@@ -119,16 +119,16 @@
   },
   "hotPaths": [
     {
+      "path": "src",
+      "accessCount": 4,
+      "lastAccessed": 1778035969317,
+      "type": "directory"
+    },
+    {
       "path": "src/components/ArchMap.jsx",
       "accessCount": 3,
       "lastAccessed": 1778028677380,
       "type": "file"
-    },
-    {
-      "path": "src",
-      "accessCount": 3,
-      "lastAccessed": 1778028680929,
-      "type": "directory"
     },
     {
       "path": "index.html",
@@ -149,15 +149,21 @@
       "type": "file"
     },
     {
-      "path": "src/components/DetailPanel.jsx",
-      "accessCount": 2,
-      "lastAccessed": 1778028673794,
+      "path": "src/components/Sidebar.jsx",
+      "accessCount": 3,
+      "lastAccessed": 1778035965428,
       "type": "file"
     },
     {
-      "path": "src/components/Sidebar.jsx",
+      "path": "src/components/DetailPanel.jsx",
+      "accessCount": 3,
+      "lastAccessed": 1778035965547,
+      "type": "file"
+    },
+    {
+      "path": "src/data/cameraData.js",
       "accessCount": 2,
-      "lastAccessed": 1778028674929,
+      "lastAccessed": 1778035965307,
       "type": "file"
     },
     {
@@ -183,6 +189,12 @@
       "accessCount": 1,
       "lastAccessed": 1778028541476,
       "type": "file"
+    },
+    {
+      "path": "src/data",
+      "accessCount": 1,
+      "lastAccessed": 1778035879173,
+      "type": "directory"
     }
   ],
   "userDirectives": []

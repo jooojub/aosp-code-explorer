@@ -9,28 +9,30 @@ const LAYER_PAD_TOP   = 46;
 const LAYER_PAD_BOTTOM= 14;
 export const LEFT_PAD = Math.round((CANVAS_W - (NODES_PER_ROW * (NODE_W + GAP_X) - GAP_X)) / 2);
 
+// Vivid, well-separated palette so each layer reads at a glance.
+// Hue progression (top → bottom): blue → violet → cyan → slate → orange → red → green → pink
 const C = {
-  app:      '#547A95',
-  java:     '#4A7090',
-  native:   '#3D6478',
-  service:  '#2C3947',
-  hal_if:   '#C2A56D',
-  hal_impl: '#A8895A',
-  kernel:   '#6B8FA5',
-  hw:       '#4A5F6E',
+  app:      '#2563EB', // blue-600
+  java:     '#7C3AED', // violet-600
+  native:   '#0891B2', // cyan-600
+  service:  '#334155', // slate-700  (anchor — darker, central service tier)
+  hal_if:   '#EA580C', // orange-600
+  hal_impl: '#DC2626', // red-600
+  kernel:   '#16A34A', // green-600
+  hw:       '#DB2777', // pink-600
 };
 
 const LAYER_ORDER = ['app','java','native','service','hal_if','hal_impl','kernel','hw'];
 
 const LAYER_DEFS = {
-  app:      { name:'Application',                                         color:C.app,      bg:'#EDF2F7' },
-  java:     { name:'Java API  •  android.hardware.camera2',               color:C.java,     bg:'#EAF0F6' },
-  native:   { name:'NDK  /  Native Client  •  libcamera2ndk + libcamera', color:C.native,   bg:'#E5ECF3' },
-  service:  { name:'CameraService  •  libcameraservice',                  color:C.service,  bg:'#DFE8EF' },
-  hal_if:   { name:'HAL AIDL Interface  •  android.hardware.camera',      color:C.hal_if,   bg:'#F5EFE3' },
-  hal_impl: { name:'HAL Implementation',                                  color:C.hal_impl, bg:'#F0E8D8' },
-  kernel:   { name:'Linux Kernel  •  Drivers',                            color:C.kernel,   bg:'#E8EDF2' },
-  hw:       { name:'Hardware',                                             color:C.hw,       bg:'#E0E8EF' },
+  app:      { name:'Application',                                         color:C.app,      bg:'#EFF6FF' }, // blue-50
+  java:     { name:'Java API  •  android.hardware.camera2',               color:C.java,     bg:'#F5F3FF' }, // violet-50
+  native:   { name:'NDK  /  Native Client  •  libcamera2ndk + libcamera', color:C.native,   bg:'#ECFEFF' }, // cyan-50
+  service:  { name:'CameraService  •  libcameraservice',                  color:C.service,  bg:'#F1F5F9' }, // slate-100
+  hal_if:   { name:'HAL AIDL Interface  •  android.hardware.camera',      color:C.hal_if,   bg:'#FFF7ED' }, // orange-50
+  hal_impl: { name:'HAL Implementation',                                  color:C.hal_impl, bg:'#FEF2F2' }, // red-50
+  kernel:   { name:'Linux Kernel  •  Drivers',                            color:C.kernel,   bg:'#F0FDF4' }, // green-50
+  hw:       { name:'Hardware',                                            color:C.hw,       bg:'#FDF2F8' }, // pink-50
 };
 
 const NODE_DEFS = [
