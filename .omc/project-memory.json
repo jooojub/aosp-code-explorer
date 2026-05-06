@@ -120,8 +120,8 @@
   "hotPaths": [
     {
       "path": "src/data/cameraData.js",
-      "accessCount": 7,
-      "lastAccessed": 1778036539965,
+      "accessCount": 9,
+      "lastAccessed": 1778037103602,
       "type": "file"
     },
     {
@@ -131,9 +131,27 @@
       "type": "directory"
     },
     {
+      "path": "src/App.jsx",
+      "accessCount": 4,
+      "lastAccessed": 1778037092233,
+      "type": "file"
+    },
+    {
       "path": "src/components/ArchMap.jsx",
-      "accessCount": 3,
-      "lastAccessed": 1778028677380,
+      "accessCount": 4,
+      "lastAccessed": 1778037092955,
+      "type": "file"
+    },
+    {
+      "path": "src/components/DetailPanel.jsx",
+      "accessCount": 4,
+      "lastAccessed": 1778037093317,
+      "type": "file"
+    },
+    {
+      "path": "src/components/Sidebar.jsx",
+      "accessCount": 4,
+      "lastAccessed": 1778037093885,
       "type": "file"
     },
     {
@@ -146,24 +164,6 @@
       "path": "src/index.css",
       "accessCount": 3,
       "lastAccessed": 1778028725912,
-      "type": "file"
-    },
-    {
-      "path": "src/App.jsx",
-      "accessCount": 3,
-      "lastAccessed": 1778028805340,
-      "type": "file"
-    },
-    {
-      "path": "src/components/Sidebar.jsx",
-      "accessCount": 3,
-      "lastAccessed": 1778035965428,
-      "type": "file"
-    },
-    {
-      "path": "src/components/DetailPanel.jsx",
-      "accessCount": 3,
-      "lastAccessed": 1778035965547,
       "type": "file"
     },
     {
@@ -195,6 +195,18 @@
       "accessCount": 1,
       "lastAccessed": 1778035879173,
       "type": "directory"
+    },
+    {
+      "path": "src/data/camera.json",
+      "accessCount": 1,
+      "lastAccessed": 1778037071237,
+      "type": "file"
+    },
+    {
+      "path": "src/loaders/parseModuleData.js",
+      "accessCount": 1,
+      "lastAccessed": 1778037084525,
+      "type": "file"
     }
   ],
   "userDirectives": []
