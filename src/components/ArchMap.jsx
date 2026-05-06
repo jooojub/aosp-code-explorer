@@ -68,7 +68,7 @@ function EdgePath({ edge, nodeMap, layerMap, dimmed }) {
   const strokeW = edge.important ? 1.6 : 1.0;
   return (
     <path d={d} fill="none"
-      stroke="rgba(0,0,0,1)" strokeWidth={strokeW} strokeOpacity={opacity}
+      stroke="rgba(44,57,71,1)" strokeWidth={strokeW} strokeOpacity={opacity}
       markerEnd={edge.important ? 'url(#arr-main)' : 'url(#arr-sec)'}
     />
   );
@@ -175,27 +175,27 @@ function Minimap({ transform, svgW, svgH, nodes, onApplyTransform, onFit }) {
   return (
     <div style={{
       background: '#ffffff',
-      border: '1px solid #d0d7de',
+      border: '1px solid #C5CFD8',
       borderRadius: 6,
       overflow: 'hidden',
       boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
     }}>
       <div style={{
         padding: '3px 8px',
-        borderBottom: '1px solid #d0d7de',
+        borderBottom: '1px solid #C5CFD8',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
-        <span style={{ fontSize: 9, fontFamily: 'monospace', color: '#57606a', fontWeight: 700, letterSpacing: '0.08em' }}>
+        <span style={{ fontSize: 9, fontFamily: 'monospace', color: '#547A95', fontWeight: 700, letterSpacing: '0.08em' }}>
           MINIMAP
         </span>
         <button
           onClick={onFit}
           className="hover:bg-black/5 rounded transition-colors"
           style={{
-            fontSize: 9, fontFamily: 'monospace', color: '#2563eb',
-            padding: '1px 5px', border: '1px solid #2563eb33',
+            fontSize: 9, fontFamily: 'monospace', color: '#547A95',
+            padding: '1px 5px', border: '1px solid #547A9533',
             borderRadius: 4, lineHeight: 1.6, cursor: 'pointer',
-            background: '#2563eb0d',
+            background: '#547A950d',
           }}
         >
           Fit
@@ -207,7 +207,7 @@ function Minimap({ transform, svgW, svgH, nodes, onApplyTransform, onFit }) {
         onMouseDown={handleMouseDown}
         style={{ display: 'block', cursor: 'crosshair' }}
       >
-        <rect width={MINIMAP_W} height={mmH} fill="#f6f8fa" />
+        <rect width={MINIMAP_W} height={mmH} fill="#E8EDF2" />
         {LAYERS.map(l => (
           <g key={l.id}>
             <rect x={0} y={l.y * ms} width={MINIMAP_W} height={l.height * ms} fill={l.bg} />
@@ -226,7 +226,7 @@ function Minimap({ transform, svgW, svgH, nodes, onApplyTransform, onFit }) {
           x={vpX} y={vpY}
           width={Math.max(4, vpW)} height={Math.max(4, vpH)}
           fill="rgba(37,99,235,0.08)"
-          stroke="#2563eb" strokeWidth={1.5}
+          stroke="#547A95" strokeWidth={1.5}
           strokeDasharray="3,2"
           style={{ cursor: 'move' }}
         />
@@ -338,18 +338,18 @@ export default function ArchMap({ nodes, edges, selectedNode, onNodeClick }) {
   const handleHover = useCallback((id) => setHovered(id), []);
 
   return (
-    <div className="w-full h-full relative" style={{ background: '#f6f8fa' }}>
+    <div className="w-full h-full relative" style={{ background: '#E8EDF2' }}>
       <svg ref={svgRef} className="w-full h-full" style={{ display: 'block' }}>
         <defs>
           <marker id="arr-main" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
-            <polygon points="0 0, 7 2.5, 0 5" fill="rgba(0,0,0,0.5)" />
+            <polygon points="0 0, 7 2.5, 0 5" fill="rgba(44,57,71,0.65)" />
           </marker>
           <marker id="arr-sec" markerWidth="5" markerHeight="4" refX="4" refY="2" orient="auto">
-            <polygon points="0 0, 5 2, 0 4" fill="rgba(0,0,0,0.25)" />
+            <polygon points="0 0, 5 2, 0 4" fill="rgba(44,57,71,0.35)" />
           </marker>
         </defs>
         <g ref={gRef}>
-          <rect x={0} y={0} width={CANVAS_W} height={CANVAS_H} fill="#f6f8fa" />
+          <rect x={0} y={0} width={CANVAS_W} height={CANVAS_H} fill="#E8EDF2" />
           {LAYERS.map(layer => <LayerBand key={layer.id} layer={layer} />)}
           {edges.map(edge => {
             const isConnectedEdge = hasSelection &&
@@ -378,7 +378,7 @@ export default function ArchMap({ nodes, edges, selectedNode, onNodeClick }) {
         <div
           className="flex items-center gap-1"
           style={{
-            background: '#ffffff', border: '1px solid #d0d7de',
+            background: '#ffffff', border: '1px solid #C5CFD8',
             borderRadius: 6, padding: '3px 4px',
             boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
           }}
@@ -386,17 +386,17 @@ export default function ArchMap({ nodes, edges, selectedNode, onNodeClick }) {
           <button
             onClick={() => changeZoom(1 / 1.3)}
             className="flex items-center justify-center hover:bg-black/5 rounded transition-colors"
-            style={{ width: 22, height: 22, fontSize: 16, color: '#57606a', lineHeight: 1 }}
+            style={{ width: 22, height: 22, fontSize: 16, color: '#547A95', lineHeight: 1 }}
           >−</button>
           <button
             onClick={resetZoom}
             className="hover:bg-black/5 rounded transition-colors"
-            style={{ minWidth: 48, height: 22, fontSize: 11, fontFamily: 'monospace', color: '#24292f', textAlign: 'center' }}
+            style={{ minWidth: 48, height: 22, fontSize: 11, fontFamily: 'monospace', color: '#2C3947', textAlign: 'center' }}
           >{zoomPct}%</button>
           <button
             onClick={() => changeZoom(1.3)}
             className="flex items-center justify-center hover:bg-black/5 rounded transition-colors"
-            style={{ width: 22, height: 22, fontSize: 16, color: '#57606a', lineHeight: 1 }}
+            style={{ width: 22, height: 22, fontSize: 16, color: '#547A95', lineHeight: 1 }}
           >+</button>
         </div>
 

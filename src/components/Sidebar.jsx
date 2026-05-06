@@ -5,14 +5,14 @@ import { NODES } from '../data/cameraData';
 const LAYER_ORDER = ['app', 'java', 'native', 'service', 'hal_if', 'hal_impl', 'kernel', 'hw'];
 
 const LAYER_META = {
-  app:      { label: 'Application',          color: '#16a34a' },
-  java:     { label: 'Java API',             color: '#2563eb' },
-  native:   { label: 'NDK / Native',         color: '#4f46e5' },
-  service:  { label: 'CameraService',        color: '#7c3aed' },
-  hal_if:   { label: 'HAL AIDL Interface',   color: '#d97706' },
-  hal_impl: { label: 'HAL Implementation',   color: '#ea580c' },
-  kernel:   { label: 'Kernel / Drivers',     color: '#9333ea' },
-  hw:       { label: 'Hardware',             color: '#dc2626' },
+  app:      { label: 'Application',          color: '#547A95' },
+  java:     { label: 'Java API',             color: '#4A7090' },
+  native:   { label: 'NDK / Native',         color: '#3D6478' },
+  service:  { label: 'CameraService',        color: '#2C3947' },
+  hal_if:   { label: 'HAL AIDL Interface',   color: '#C2A56D' },
+  hal_impl: { label: 'HAL Implementation',   color: '#A8895A' },
+  kernel:   { label: 'Kernel / Drivers',     color: '#6B8FA5' },
+  hw:       { label: 'Hardware',             color: '#4A5F6E' },
 };
 
 export default function Sidebar({ selectedNode, onNodeClick, search, open, onToggle }) {
@@ -45,12 +45,12 @@ export default function Sidebar({ selectedNode, onNodeClick, search, open, onTog
     return (
       <aside
         className="flex-shrink-0 flex flex-col border-r"
-        style={{ width: 40, borderColor: '#d0d7de', background: '#f6f8fa' }}
+        style={{ width: 40, borderColor: '#C5CFD8', background: '#E8EDF2' }}
       >
         <button
           onClick={onToggle}
           className="flex items-center justify-center hover:bg-black/5 transition-colors"
-          style={{ width: 40, height: 36, color: '#57606a' }}
+          style={{ width: 40, height: 36, color: '#547A95' }}
           title="Show sidebar"
         >
           <Menu size={15} />
@@ -62,17 +62,17 @@ export default function Sidebar({ selectedNode, onNodeClick, search, open, onTog
   return (
     <aside
       className="w-56 flex-shrink-0 flex flex-col border-r overflow-hidden"
-      style={{ borderColor: '#d0d7de', background: '#f6f8fa' }}
+      style={{ borderColor: '#C5CFD8', background: '#E8EDF2' }}
     >
       {/* Legend header */}
-      <div className="flex items-center justify-between px-3 py-2 border-b" style={{ borderColor: '#d0d7de' }}>
-        <p className="text-xs font-semibold" style={{ color: '#57606a', fontFamily: 'monospace' }}>
+      <div className="flex items-center justify-between px-3 py-2 border-b" style={{ borderColor: '#C5CFD8' }}>
+        <p className="text-xs font-semibold" style={{ color: '#547A95', fontFamily: 'monospace' }}>
           LAYERS
         </p>
         <button
           onClick={onToggle}
           className="flex items-center justify-center rounded hover:bg-black/5 transition-colors"
-          style={{ width: 22, height: 22, color: '#57606a' }}
+          style={{ width: 22, height: 22, color: '#547A95' }}
           title="Hide sidebar"
         >
           <Menu size={13} />
@@ -101,10 +101,10 @@ export default function Sidebar({ selectedNode, onNodeClick, search, open, onTog
                 >
                   {meta.label}
                 </span>
-                <span className="text-xs" style={{ color: '#6e7781', fontFamily: 'monospace' }}>
+                <span className="text-xs" style={{ color: '#7A96A8', fontFamily: 'monospace' }}>
                   {layerNodes.length}
                 </span>
-                <span style={{ color: '#6e7781', fontSize: 10 }}>
+                <span style={{ color: '#7A96A8', fontSize: 10 }}>
                   {isCollapsed ? '▶' : '▼'}
                 </span>
               </button>
@@ -121,7 +121,7 @@ export default function Sidebar({ selectedNode, onNodeClick, search, open, onTog
                         className="block w-full text-left px-5 py-1 text-xs truncate transition-colors hover:bg-black/5"
                         style={{
                           fontFamily: 'monospace',
-                          color: isSelected ? node.color : '#24292f',
+                          color: isSelected ? node.color : '#2C3947',
                           background: isSelected ? node.color + '18' : 'transparent',
                           borderLeft: isSelected ? `2px solid ${node.color}` : '2px solid transparent',
                           paddingLeft: isSelected ? 18 : 20,
@@ -140,24 +140,24 @@ export default function Sidebar({ selectedNode, onNodeClick, search, open, onTog
       </div>
 
       {/* Legend for edge types */}
-      <div className="px-3 py-2 border-t" style={{ borderColor: '#d0d7de' }}>
-        <p className="text-xs font-semibold mb-2" style={{ color: '#57606a', fontFamily: 'monospace' }}>
+      <div className="px-3 py-2 border-t" style={{ borderColor: '#C5CFD8' }}>
+        <p className="text-xs font-semibold mb-2" style={{ color: '#547A95', fontFamily: 'monospace' }}>
           CONNECTIONS
         </p>
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <svg width="24" height="8">
-              <line x1="0" y1="4" x2="20" y2="4" stroke="rgba(0,0,0,0.45)" strokeWidth="1.5" />
-              <polygon points="16,1 22,4 16,7" fill="rgba(0,0,0,0.5)" />
+              <line x1="0" y1="4" x2="20" y2="4" stroke="rgba(44,57,71,0.6)" strokeWidth="1.5" />
+              <polygon points="16,1 22,4 16,7" fill="rgba(44,57,71,0.65)" />
             </svg>
-            <span className="text-xs" style={{ color: '#57606a', fontFamily: 'monospace' }}>Primary</span>
+            <span className="text-xs" style={{ color: '#547A95', fontFamily: 'monospace' }}>Primary</span>
           </div>
           <div className="flex items-center gap-2">
             <svg width="24" height="8">
-              <line x1="0" y1="4" x2="20" y2="4" stroke="rgba(0,0,0,0.2)" strokeWidth="0.8" />
-              <polygon points="16,2 21,4 16,6" fill="rgba(0,0,0,0.25)" />
+              <line x1="0" y1="4" x2="20" y2="4" stroke="rgba(44,57,71,0.25)" strokeWidth="0.8" />
+              <polygon points="16,2 21,4 16,6" fill="rgba(44,57,71,0.3)" />
             </svg>
-            <span className="text-xs" style={{ color: '#57606a', fontFamily: 'monospace' }}>Secondary</span>
+            <span className="text-xs" style={{ color: '#547A95', fontFamily: 'monospace' }}>Secondary</span>
           </div>
         </div>
       </div>

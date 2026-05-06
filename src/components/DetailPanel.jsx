@@ -3,20 +3,20 @@ import { X, Folder, File, ArrowRight, ArrowLeft, Link } from 'lucide-react';
 import { NODES, EDGES, LAYERS } from '../data/cameraData';
 
 const LAYER_META = {
-  app:      { label: 'Application',         color: '#16a34a' },
-  java:     { label: 'Java API',            color: '#2563eb' },
-  native:   { label: 'NDK / Native',        color: '#4f46e5' },
-  service:  { label: 'CameraService',       color: '#7c3aed' },
-  hal_if:   { label: 'HAL AIDL Interface',  color: '#d97706' },
-  hal_impl: { label: 'HAL Implementation',  color: '#ea580c' },
-  kernel:   { label: 'Kernel / Drivers',    color: '#9333ea' },
-  hw:       { label: 'Hardware',            color: '#dc2626' },
+  app:      { label: 'Application',         color: '#547A95' },
+  java:     { label: 'Java API',            color: '#4A7090' },
+  native:   { label: 'NDK / Native',        color: '#3D6478' },
+  service:  { label: 'CameraService',       color: '#2C3947' },
+  hal_if:   { label: 'HAL AIDL Interface',  color: '#C2A56D' },
+  hal_impl: { label: 'HAL Implementation',  color: '#A8895A' },
+  kernel:   { label: 'Kernel / Drivers',    color: '#6B8FA5' },
+  hw:       { label: 'Hardware',            color: '#4A5F6E' },
 };
 
 function Section({ title, children }) {
   return (
     <div className="mb-5">
-      <p className="text-xs font-semibold mb-2 tracking-widest" style={{ color: '#57606a', fontFamily: 'monospace' }}>
+      <p className="text-xs font-semibold mb-2 tracking-widest" style={{ color: '#547A95', fontFamily: 'monospace' }}>
         {title}
       </p>
       {children}
@@ -42,10 +42,10 @@ export default function DetailPanel({ node, onClose, onNodeClick }) {
   return (
     <aside
       className="w-80 flex-shrink-0 flex flex-col border-l overflow-hidden"
-      style={{ borderColor: '#d0d7de', background: '#f6f8fa' }}
+      style={{ borderColor: '#C5CFD8', background: '#E8EDF2' }}
     >
       {/* Header */}
-      <div className="flex items-start justify-between px-4 py-3 border-b" style={{ borderColor: '#d0d7de' }}>
+      <div className="flex items-start justify-between px-4 py-3 border-b" style={{ borderColor: '#C5CFD8' }}>
         <div className="flex-1 min-w-0">
           <h2
             className="text-sm font-bold leading-tight break-words"
@@ -68,7 +68,7 @@ export default function DetailPanel({ node, onClose, onNodeClick }) {
         <button
           onClick={onClose}
           className="ml-2 p-1 rounded hover:bg-black/10 transition-colors flex-shrink-0"
-          style={{ color: '#57606a' }}
+          style={{ color: '#547A95' }}
         >
           <X size={14} />
         </button>
@@ -80,7 +80,7 @@ export default function DetailPanel({ node, onClose, onNodeClick }) {
         {/* Description */}
         {node.description && (
           <Section title="DESCRIPTION">
-            <p className="text-xs leading-relaxed" style={{ color: '#57606a', fontFamily: 'monospace' }}>
+            <p className="text-xs leading-relaxed" style={{ color: '#547A95', fontFamily: 'monospace' }}>
               {node.description}
             </p>
           </Section>
@@ -91,10 +91,10 @@ export default function DetailPanel({ node, onClose, onNodeClick }) {
           <Section title="SOURCE PATH">
             <div
               className="flex items-start gap-2 px-2 py-1.5 rounded text-xs break-all"
-              style={{ background: '#ffffff', border: '1px solid #d0d7de' }}
+              style={{ background: '#F0F4F8', border: '1px solid #C5CFD8' }}
             >
-              <Folder size={12} className="flex-shrink-0 mt-0.5" style={{ color: '#bf8700' }} />
-              <span style={{ color: '#1f2328', fontFamily: 'monospace' }}>{node.path}</span>
+              <Folder size={12} className="flex-shrink-0 mt-0.5" style={{ color: '#C2A56D' }} />
+              <span style={{ color: '#2C3947', fontFamily: 'monospace' }}>{node.path}</span>
             </div>
           </Section>
         )}
@@ -107,10 +107,10 @@ export default function DetailPanel({ node, onClose, onNodeClick }) {
                 <div
                   key={f}
                   className="flex items-center gap-2 px-2 py-1 rounded text-xs"
-                  style={{ background: '#ffffff', border: '1px solid #d0d7de' }}
+                  style={{ background: '#F0F4F8', border: '1px solid #C5CFD8' }}
                 >
-                  <File size={11} className="flex-shrink-0" style={{ color: '#8250df' }} />
-                  <span className="truncate" style={{ color: '#57606a', fontFamily: 'monospace' }}>{f}</span>
+                  <File size={11} className="flex-shrink-0" style={{ color: '#547A95' }} />
+                  <span className="truncate" style={{ color: '#547A95', fontFamily: 'monospace' }}>{f}</span>
                 </div>
               ))}
             </div>
@@ -126,13 +126,13 @@ export default function DetailPanel({ node, onClose, onNodeClick }) {
                   key={e.target}
                   onClick={() => onNodeClick(e.peer)}
                   className="flex items-center gap-2 px-2 py-1.5 rounded text-xs text-left transition-colors hover:bg-black/5 w-full"
-                  style={{ border: '1px solid #d0d7de', background: '#ffffff' }}
+                  style={{ border: '1px solid #C5CFD8', background: '#F0F4F8' }}
                 >
                   <ArrowRight size={11} className="flex-shrink-0" style={{ color: e.peer.color }} />
                   <span className="flex-1 truncate font-medium" style={{ color: e.peer.color, fontFamily: 'monospace' }}>
                     {e.peer.label}
                   </span>
-                  <span className="text-xs flex-shrink-0" style={{ color: '#6e7781', fontFamily: 'monospace' }}>
+                  <span className="text-xs flex-shrink-0" style={{ color: '#7A96A8', fontFamily: 'monospace' }}>
                     {e.label}
                   </span>
                 </button>
@@ -150,13 +150,13 @@ export default function DetailPanel({ node, onClose, onNodeClick }) {
                   key={e.source}
                   onClick={() => onNodeClick(e.peer)}
                   className="flex items-center gap-2 px-2 py-1.5 rounded text-xs text-left transition-colors hover:bg-black/5 w-full"
-                  style={{ border: '1px solid #d0d7de', background: '#ffffff' }}
+                  style={{ border: '1px solid #C5CFD8', background: '#F0F4F8' }}
                 >
                   <ArrowLeft size={11} className="flex-shrink-0" style={{ color: e.peer.color }} />
                   <span className="flex-1 truncate font-medium" style={{ color: e.peer.color, fontFamily: 'monospace' }}>
                     {e.peer.label}
                   </span>
-                  <span className="text-xs flex-shrink-0" style={{ color: '#6e7781', fontFamily: 'monospace' }}>
+                  <span className="text-xs flex-shrink-0" style={{ color: '#7A96A8', fontFamily: 'monospace' }}>
                     {e.label}
                   </span>
                 </button>

@@ -11,7 +11,7 @@ function ModuleTabs({ active, onChange }) {
   return (
     <div
       className="flex-shrink-0 flex items-center gap-1 px-3 border-b"
-      style={{ borderColor: '#d0d7de', background: '#f6f8fa', height: 40 }}
+      style={{ borderColor: '#C5CFD8', background: '#E8EDF2', height: 40 }}
     >
       {MODULES.map(mod => {
         const Icon = mod.icon;
@@ -25,7 +25,7 @@ function ModuleTabs({ active, onChange }) {
               fontFamily: 'monospace',
               cursor: mod.ready ? 'pointer' : 'default',
               background: isActive ? '#ffffff' : 'transparent',
-              color: isActive ? mod.color : mod.ready ? '#57606a' : '#b0b8c1',
+              color: isActive ? mod.color : mod.ready ? '#547A95' : '#9BAEBB',
               border: isActive ? `1px solid ${mod.color}44` : '1px solid transparent',
               boxShadow: isActive ? '0 1px 3px rgba(0,0,0,0.10)' : 'none',
             }}
@@ -35,7 +35,7 @@ function ModuleTabs({ active, onChange }) {
             {!mod.ready && (
               <span
                 className="text-xs px-1 rounded"
-                style={{ fontSize: 9, background: '#eaf0f6', color: '#8c959f', fontFamily: 'monospace' }}
+                style={{ fontSize: 9, background: '#DFE8EE', color: '#7A96A8', fontFamily: 'monospace' }}
               >
                 soon
               </span>
@@ -69,30 +69,30 @@ export default function App() {
   }, [search]);
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden" style={{ background: '#ffffff', color: '#1f2328' }}>
+    <div className="flex flex-col h-screen overflow-hidden" style={{ background: '#E8EDF2', color: '#2C3947' }}>
 
       {/* Header */}
       <header
         className="flex-shrink-0 flex items-center gap-3 px-4 h-11 border-b"
-        style={{ borderColor: '#d0d7de', background: '#ffffff' }}
+        style={{ borderColor: '#C5CFD8', background: '#E8EDF2' }}
       >
         <div className="flex items-center gap-2">
-          <Layers size={15} style={{ color: '#0969da' }} />
-          <span className="text-xs font-bold" style={{ color: '#0969da', fontFamily: 'monospace' }}>AOSP</span>
-          <span className="text-xs" style={{ color: '#57606a', fontFamily: 'monospace' }}>/</span>
-          <span className="text-xs font-semibold" style={{ color: '#1f2328', fontFamily: 'monospace' }}>
+          <Layers size={15} style={{ color: '#547A95' }} />
+          <span className="text-xs font-bold" style={{ color: '#547A95', fontFamily: 'monospace' }}>AOSP</span>
+          <span className="text-xs" style={{ color: '#7A96A8', fontFamily: 'monospace' }}>/</span>
+          <span className="text-xs font-semibold" style={{ color: '#2C3947', fontFamily: 'monospace' }}>
             Camera Framework Explorer
           </span>
         </div>
 
         <div className="flex-1" />
 
-        <span className="text-xs hidden md:block" style={{ color: '#6e7781', fontFamily: 'monospace' }}>
+        <span className="text-xs hidden md:block" style={{ color: '#7A96A8', fontFamily: 'monospace' }}>
           scroll to zoom · drag to pan · click node to inspect
         </span>
 
         <div className="relative">
-          <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2" style={{ color: '#57606a' }} />
+          <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2" style={{ color: '#7A96A8' }} />
           <input
             type="text"
             placeholder="Search components…"
@@ -100,21 +100,21 @@ export default function App() {
             onChange={e => setSearch(e.target.value)}
             className="pl-7 pr-7 py-1 text-xs rounded outline-none"
             style={{
-              background: '#f6f8fa',
-              border: '1px solid #d0d7de',
-              color: '#1f2328',
+              background: '#F0F4F8',
+              border: '1px solid #C5CFD8',
+              color: '#2C3947',
               fontFamily: 'monospace',
               width: 220,
               transition: 'border-color 0.15s',
             }}
-            onFocus={e => (e.target.style.borderColor = '#0969da')}
-            onBlur={e => (e.target.style.borderColor = '#d0d7de')}
+            onFocus={e => (e.target.style.borderColor = '#547A95')}
+            onBlur={e => (e.target.style.borderColor = '#C5CFD8')}
           />
           {search && (
             <button
               onClick={() => setSearch('')}
               className="absolute right-2 top-1/2 -translate-y-1/2"
-              style={{ color: '#57606a' }}
+              style={{ color: '#7A96A8' }}
             >
               <X size={11} />
             </button>
@@ -146,9 +146,9 @@ export default function App() {
             <div
               className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs px-3 py-1.5 rounded-full pointer-events-none"
               style={{
-                background: '#eaf0f6',
-                border: '1px solid #d0d7de',
-                color: '#6e7781',
+                background: '#DFE8EE',
+                border: '1px solid #C5CFD8',
+                color: '#547A95',
                 fontFamily: 'monospace',
               }}
             >

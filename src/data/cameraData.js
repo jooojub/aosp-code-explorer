@@ -10,27 +10,27 @@ const LAYER_PAD_BOTTOM= 14;
 export const LEFT_PAD = Math.round((CANVAS_W - (NODES_PER_ROW * (NODE_W + GAP_X) - GAP_X)) / 2);
 
 const C = {
-  app:      '#16a34a',
-  java:     '#2563eb',
-  native:   '#4f46e5',
-  service:  '#7c3aed',
-  hal_if:   '#d97706',
-  hal_impl: '#ea580c',
-  kernel:   '#9333ea',
-  hw:       '#dc2626',
+  app:      '#547A95',
+  java:     '#4A7090',
+  native:   '#3D6478',
+  service:  '#2C3947',
+  hal_if:   '#C2A56D',
+  hal_impl: '#A8895A',
+  kernel:   '#6B8FA5',
+  hw:       '#4A5F6E',
 };
 
 const LAYER_ORDER = ['app','java','native','service','hal_if','hal_impl','kernel','hw'];
 
 const LAYER_DEFS = {
-  app:      { name:'Application',                                         color:C.app,      bg:'#f0fdf4' },
-  java:     { name:'Java API  •  android.hardware.camera2',               color:C.java,     bg:'#eff6ff' },
-  native:   { name:'NDK  /  Native Client  •  libcamera2ndk + libcamera', color:C.native,   bg:'#eef2ff' },
-  service:  { name:'CameraService  •  libcameraservice',                  color:C.service,  bg:'#f5f3ff' },
-  hal_if:   { name:'HAL AIDL Interface  •  android.hardware.camera',      color:C.hal_if,   bg:'#fffbeb' },
-  hal_impl: { name:'HAL Implementation',                                  color:C.hal_impl, bg:'#fff7ed' },
-  kernel:   { name:'Linux Kernel  •  Drivers',                            color:C.kernel,   bg:'#faf5ff' },
-  hw:       { name:'Hardware',                                             color:C.hw,       bg:'#fef2f2' },
+  app:      { name:'Application',                                         color:C.app,      bg:'#EDF2F7' },
+  java:     { name:'Java API  •  android.hardware.camera2',               color:C.java,     bg:'#EAF0F6' },
+  native:   { name:'NDK  /  Native Client  •  libcamera2ndk + libcamera', color:C.native,   bg:'#E5ECF3' },
+  service:  { name:'CameraService  •  libcameraservice',                  color:C.service,  bg:'#DFE8EF' },
+  hal_if:   { name:'HAL AIDL Interface  •  android.hardware.camera',      color:C.hal_if,   bg:'#F5EFE3' },
+  hal_impl: { name:'HAL Implementation',                                  color:C.hal_impl, bg:'#F0E8D8' },
+  kernel:   { name:'Linux Kernel  •  Drivers',                            color:C.kernel,   bg:'#E8EDF2' },
+  hw:       { name:'Hardware',                                             color:C.hw,       bg:'#E0E8EF' },
 };
 
 const NODE_DEFS = [
