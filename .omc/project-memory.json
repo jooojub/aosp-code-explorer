@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1777529654663,
+  "lastScanned": 1778028461579,
   "projectRoot": "/home/jooojub/Workspace/sdk/aosp/CodeExplorer",
   "techStack": {
     "languages": [
@@ -66,7 +66,7 @@
       "path": "public",
       "purpose": "Public files",
       "fileCount": 2,
-      "lastAccessed": 1777529654657,
+      "lastAccessed": 1778028461571,
       "keyFiles": [
         "favicon.svg",
         "icons.svg"
@@ -76,7 +76,7 @@
       "path": "src",
       "purpose": "Source code",
       "fileCount": 4,
-      "lastAccessed": 1777529654657,
+      "lastAccessed": 1778028461571,
       "keyFiles": [
         "App.css",
         "App.jsx",
@@ -88,7 +88,7 @@
       "path": "src/assets",
       "purpose": "Static assets",
       "fileCount": 3,
-      "lastAccessed": 1777529654662,
+      "lastAccessed": 1778028461576,
       "keyFiles": [
         "hero.png",
         "react.svg",
@@ -99,7 +99,7 @@
       "path": "src/components",
       "purpose": "UI components",
       "fileCount": 3,
-      "lastAccessed": 1777529654662,
+      "lastAccessed": 1778028461577,
       "keyFiles": [
         "ArchMap.jsx",
         "DetailPanel.jsx",
@@ -109,48 +109,79 @@
     "src/data": {
       "path": "src/data",
       "purpose": "Data files",
-      "fileCount": 1,
-      "lastAccessed": 1777529654662,
+      "fileCount": 2,
+      "lastAccessed": 1778028461577,
       "keyFiles": [
-        "cameraData.js"
+        "cameraData.js",
+        "modules.js"
       ]
     }
   },
   "hotPaths": [
     {
-      "path": "src/components/DetailPanel.jsx",
-      "accessCount": 11,
-      "lastAccessed": 1777530608306,
-      "type": "file"
-    },
-    {
       "path": "src/components/ArchMap.jsx",
-      "accessCount": 11,
-      "lastAccessed": 1777558190506,
+      "accessCount": 3,
+      "lastAccessed": 1778028677380,
       "type": "file"
     },
     {
-      "path": "src/components/Sidebar.jsx",
-      "accessCount": 9,
-      "lastAccessed": 1777530635705,
-      "type": "file"
+      "path": "src",
+      "accessCount": 3,
+      "lastAccessed": 1778028680929,
+      "type": "directory"
     },
     {
-      "path": "src/App.jsx",
-      "accessCount": 6,
-      "lastAccessed": 1777530571509,
-      "type": "file"
-    },
-    {
-      "path": "src/data/cameraData.js",
-      "accessCount": 5,
-      "lastAccessed": 1777558168562,
+      "path": "index.html",
+      "accessCount": 3,
+      "lastAccessed": 1778028682068,
       "type": "file"
     },
     {
       "path": "src/index.css",
+      "accessCount": 3,
+      "lastAccessed": 1778028725912,
+      "type": "file"
+    },
+    {
+      "path": "src/App.jsx",
       "accessCount": 2,
-      "lastAccessed": 1777530632656,
+      "lastAccessed": 1778028672675,
+      "type": "file"
+    },
+    {
+      "path": "src/components/DetailPanel.jsx",
+      "accessCount": 2,
+      "lastAccessed": 1778028673794,
+      "type": "file"
+    },
+    {
+      "path": "src/components/Sidebar.jsx",
+      "accessCount": 2,
+      "lastAccessed": 1778028674929,
+      "type": "file"
+    },
+    {
+      "path": "tailwind.config.js",
+      "accessCount": 1,
+      "lastAccessed": 1778028531182,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 1,
+      "lastAccessed": 1778028531271,
+      "type": "file"
+    },
+    {
+      "path": "src/App.css",
+      "accessCount": 1,
+      "lastAccessed": 1778028541300,
+      "type": "file"
+    },
+    {
+      "path": "src/main.jsx",
+      "accessCount": 1,
+      "lastAccessed": 1778028541476,
       "type": "file"
     }
   ],

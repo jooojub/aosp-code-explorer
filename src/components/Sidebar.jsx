@@ -66,7 +66,7 @@ export default function Sidebar({ selectedNode, onNodeClick, search, open, onTog
     >
       {/* Legend header */}
       <div className="flex items-center justify-between px-3 py-2 border-b" style={{ borderColor: '#C5CFD8' }}>
-        <p className="text-xs font-semibold" style={{ color: '#547A95', fontFamily: 'monospace' }}>
+        <p className="text-xs font-semibold" style={{ color: '#547A95', fontFamily: "'Nunito', sans-serif" }}>
           LAYERS
         </p>
         <button
@@ -97,11 +97,11 @@ export default function Sidebar({ selectedNode, onNodeClick, search, open, onTog
                 />
                 <span
                   className="text-xs font-semibold flex-1 truncate"
-                  style={{ color: meta.color, fontFamily: 'monospace' }}
+                  style={{ color: meta.color, fontFamily: "'Nunito', sans-serif" }}
                 >
                   {meta.label}
                 </span>
-                <span className="text-xs" style={{ color: '#7A96A8', fontFamily: 'monospace' }}>
+                <span className="text-xs" style={{ color: '#7A96A8', fontFamily: "'Nunito', sans-serif" }}>
                   {layerNodes.length}
                 </span>
                 <span style={{ color: '#7A96A8', fontSize: 10 }}>
@@ -120,7 +120,7 @@ export default function Sidebar({ selectedNode, onNodeClick, search, open, onTog
                         onClick={() => onNodeClick(node)}
                         className="block w-full text-left px-5 py-1 text-xs truncate transition-colors hover:bg-black/5"
                         style={{
-                          fontFamily: 'monospace',
+                          fontFamily: "'Nunito', sans-serif",
                           color: isSelected ? node.color : '#2C3947',
                           background: isSelected ? node.color + '18' : 'transparent',
                           borderLeft: isSelected ? `2px solid ${node.color}` : '2px solid transparent',
@@ -141,7 +141,7 @@ export default function Sidebar({ selectedNode, onNodeClick, search, open, onTog
 
       {/* Legend for edge types */}
       <div className="px-3 py-2 border-t" style={{ borderColor: '#C5CFD8' }}>
-        <p className="text-xs font-semibold mb-2" style={{ color: '#547A95', fontFamily: 'monospace' }}>
+        <p className="text-xs font-semibold mb-2" style={{ color: '#547A95', fontFamily: "'Nunito', sans-serif" }}>
           CONNECTIONS
         </p>
         <div className="flex flex-col gap-1">
@@ -150,14 +150,14 @@ export default function Sidebar({ selectedNode, onNodeClick, search, open, onTog
               <line x1="0" y1="4" x2="20" y2="4" stroke="rgba(44,57,71,0.6)" strokeWidth="1.5" />
               <polygon points="16,1 22,4 16,7" fill="rgba(44,57,71,0.65)" />
             </svg>
-            <span className="text-xs" style={{ color: '#547A95', fontFamily: 'monospace' }}>Primary</span>
+            <span className="text-xs" style={{ color: '#547A95', fontFamily: "'Nunito', sans-serif" }}>Primary</span>
           </div>
           <div className="flex items-center gap-2">
             <svg width="24" height="8">
               <line x1="0" y1="4" x2="20" y2="4" stroke="rgba(44,57,71,0.25)" strokeWidth="0.8" />
               <polygon points="16,2 21,4 16,6" fill="rgba(44,57,71,0.3)" />
             </svg>
-            <span className="text-xs" style={{ color: '#547A95', fontFamily: 'monospace' }}>Secondary</span>
+            <span className="text-xs" style={{ color: '#547A95', fontFamily: "'Nunito', sans-serif" }}>Secondary</span>
           </div>
         </div>
       </div>

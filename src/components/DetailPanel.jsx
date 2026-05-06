@@ -16,7 +16,7 @@ const LAYER_META = {
 function Section({ title, children }) {
   return (
     <div className="mb-5">
-      <p className="text-xs font-semibold mb-2 tracking-widest" style={{ color: '#547A95', fontFamily: 'monospace' }}>
+      <p className="text-xs font-semibold mb-2 tracking-widest" style={{ color: '#547A95', fontFamily: "'Nunito', sans-serif" }}>
         {title}
       </p>
       {children}
@@ -49,7 +49,7 @@ export default function DetailPanel({ node, onClose, onNodeClick }) {
         <div className="flex-1 min-w-0">
           <h2
             className="text-sm font-bold leading-tight break-words"
-            style={{ color: node.color, fontFamily: 'monospace' }}
+            style={{ color: node.color, fontFamily: "'Nunito', sans-serif" }}
           >
             {node.label}
           </h2>
@@ -58,7 +58,7 @@ export default function DetailPanel({ node, onClose, onNodeClick }) {
             style={{
               background: node.color + '22',
               color: node.color,
-              fontFamily: 'monospace',
+              fontFamily: "'Nunito', sans-serif",
               border: `1px solid ${node.color}44`,
             }}
           >
@@ -80,7 +80,7 @@ export default function DetailPanel({ node, onClose, onNodeClick }) {
         {/* Description */}
         {node.description && (
           <Section title="DESCRIPTION">
-            <p className="text-xs leading-relaxed" style={{ color: '#547A95', fontFamily: 'monospace' }}>
+            <p className="text-xs leading-relaxed" style={{ color: '#547A95', fontFamily: "'Nunito', sans-serif" }}>
               {node.description}
             </p>
           </Section>
@@ -94,7 +94,7 @@ export default function DetailPanel({ node, onClose, onNodeClick }) {
               style={{ background: '#F0F4F8', border: '1px solid #C5CFD8' }}
             >
               <Folder size={12} className="flex-shrink-0 mt-0.5" style={{ color: '#C2A56D' }} />
-              <span style={{ color: '#2C3947', fontFamily: 'monospace' }}>{node.path}</span>
+              <span style={{ color: '#2C3947', fontFamily: "'Nunito', sans-serif" }}>{node.path}</span>
             </div>
           </Section>
         )}
@@ -110,7 +110,7 @@ export default function DetailPanel({ node, onClose, onNodeClick }) {
                   style={{ background: '#F0F4F8', border: '1px solid #C5CFD8' }}
                 >
                   <File size={11} className="flex-shrink-0" style={{ color: '#547A95' }} />
-                  <span className="truncate" style={{ color: '#547A95', fontFamily: 'monospace' }}>{f}</span>
+                  <span className="truncate" style={{ color: '#547A95', fontFamily: "'Nunito', sans-serif" }}>{f}</span>
                 </div>
               ))}
             </div>
@@ -129,10 +129,10 @@ export default function DetailPanel({ node, onClose, onNodeClick }) {
                   style={{ border: '1px solid #C5CFD8', background: '#F0F4F8' }}
                 >
                   <ArrowRight size={11} className="flex-shrink-0" style={{ color: e.peer.color }} />
-                  <span className="flex-1 truncate font-medium" style={{ color: e.peer.color, fontFamily: 'monospace' }}>
+                  <span className="flex-1 truncate font-medium" style={{ color: e.peer.color, fontFamily: "'Nunito', sans-serif" }}>
                     {e.peer.label}
                   </span>
-                  <span className="text-xs flex-shrink-0" style={{ color: '#7A96A8', fontFamily: 'monospace' }}>
+                  <span className="text-xs flex-shrink-0" style={{ color: '#7A96A8', fontFamily: "'Nunito', sans-serif" }}>
                     {e.label}
                   </span>
                 </button>
@@ -153,10 +153,10 @@ export default function DetailPanel({ node, onClose, onNodeClick }) {
                   style={{ border: '1px solid #C5CFD8', background: '#F0F4F8' }}
                 >
                   <ArrowLeft size={11} className="flex-shrink-0" style={{ color: e.peer.color }} />
-                  <span className="flex-1 truncate font-medium" style={{ color: e.peer.color, fontFamily: 'monospace' }}>
+                  <span className="flex-1 truncate font-medium" style={{ color: e.peer.color, fontFamily: "'Nunito', sans-serif" }}>
                     {e.peer.label}
                   </span>
-                  <span className="text-xs flex-shrink-0" style={{ color: '#7A96A8', fontFamily: 'monospace' }}>
+                  <span className="text-xs flex-shrink-0" style={{ color: '#7A96A8', fontFamily: "'Nunito', sans-serif" }}>
                     {e.label}
                   </span>
                 </button>

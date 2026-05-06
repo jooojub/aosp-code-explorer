@@ -1,11 +1,34 @@
 @import "tailwindcss";
 
+/* Nunito variable font (weights 200-1000) served from /public */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 200 1000;
+  font-display: swap;
+  src: url('/fonts/Nunito-VariableFont_wght.ttf') format('truetype-variations'),
+       url('/fonts/Nunito-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Nunito';
+  font-style: italic;
+  font-weight: 200 1000;
+  font-display: swap;
+  src: url('/fonts/Nunito-Italic-VariableFont_wght.ttf') format('truetype-variations'),
+       url('/fonts/Nunito-Italic-VariableFont_wght.ttf') format('truetype');
+}
+
 *, *::before, *::after { box-sizing: border-box; }
+
+html, body, #root, button, input, textarea, select, optgroup,
+svg text, svg tspan {
+  font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
 
 body {
   margin: 0;
   background: #E8EDF2;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
   -webkit-font-smoothing: antialiased;
 }
 

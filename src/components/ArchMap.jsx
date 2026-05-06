@@ -49,7 +49,7 @@ function LayerBand({ layer }) {
       <rect x={0} y={layer.y + layer.height - 1} width={CANVAS_W} height={1} fill={layer.color} opacity={0.25} />
       <text
         x={10} y={layer.y + 23}
-        fill={layer.color} fontSize={13} fontFamily="'JetBrains Mono',monospace"
+        fill={layer.color} fontSize={13} fontFamily="'Nunito',sans-serif"
         fontWeight="700" dominantBaseline="middle"
         style={{ userSelect: 'none' }}
       >
@@ -98,7 +98,7 @@ function NodeBox({ node, isSelected, isConnected, isHovered, hasSelection, onCli
       <text
         x={NODE_W / 2} y={NODE_H / 2}
         textAnchor="middle" dominantBaseline="middle"
-        fill={node.color} fontSize={9.5} fontFamily="'JetBrains Mono',monospace"
+        fill={node.color} fontSize={9.5} fontFamily="'Nunito',sans-serif"
         fontWeight={isSelected ? '700' : '500'}
         style={{ userSelect: 'none', pointerEvents: 'none' }}
       >
@@ -185,14 +185,14 @@ function Minimap({ transform, svgW, svgH, nodes, onApplyTransform, onFit }) {
         borderBottom: '1px solid #C5CFD8',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
-        <span style={{ fontSize: 9, fontFamily: 'monospace', color: '#547A95', fontWeight: 700, letterSpacing: '0.08em' }}>
+        <span style={{ fontSize: 9, fontFamily: "'Nunito', sans-serif", color: '#547A95', fontWeight: 700, letterSpacing: '0.08em' }}>
           MINIMAP
         </span>
         <button
           onClick={onFit}
           className="hover:bg-black/5 rounded transition-colors"
           style={{
-            fontSize: 9, fontFamily: 'monospace', color: '#547A95',
+            fontSize: 9, fontFamily: "'Nunito', sans-serif", color: '#547A95',
             padding: '1px 5px', border: '1px solid #547A9533',
             borderRadius: 4, lineHeight: 1.6, cursor: 'pointer',
             background: '#547A950d',
@@ -391,7 +391,7 @@ export default function ArchMap({ nodes, edges, selectedNode, onNodeClick }) {
           <button
             onClick={resetZoom}
             className="hover:bg-black/5 rounded transition-colors"
-            style={{ minWidth: 48, height: 22, fontSize: 11, fontFamily: 'monospace', color: '#2C3947', textAlign: 'center' }}
+            style={{ minWidth: 48, height: 22, fontSize: 11, fontFamily: "'Nunito', sans-serif", color: '#2C3947', textAlign: 'center' }}
           >{zoomPct}%</button>
           <button
             onClick={() => changeZoom(1.3)}

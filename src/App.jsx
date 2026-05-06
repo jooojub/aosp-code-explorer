@@ -22,7 +22,7 @@ function ModuleTabs({ active, onChange }) {
             onClick={() => mod.ready && onChange(mod.id)}
             className="relative flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all"
             style={{
-              fontFamily: 'monospace',
+              fontFamily: "'Nunito', sans-serif",
               cursor: mod.ready ? 'pointer' : 'default',
               background: isActive ? '#ffffff' : 'transparent',
               color: isActive ? mod.color : mod.ready ? '#547A95' : '#9BAEBB',
@@ -35,7 +35,7 @@ function ModuleTabs({ active, onChange }) {
             {!mod.ready && (
               <span
                 className="text-xs px-1 rounded"
-                style={{ fontSize: 9, background: '#DFE8EE', color: '#7A96A8', fontFamily: 'monospace' }}
+                style={{ fontSize: 9, background: '#DFE8EE', color: '#7A96A8', fontFamily: "'Nunito', sans-serif" }}
               >
                 soon
               </span>
@@ -78,16 +78,16 @@ export default function App() {
       >
         <div className="flex items-center gap-2">
           <Layers size={15} style={{ color: '#547A95' }} />
-          <span className="text-xs font-bold" style={{ color: '#547A95', fontFamily: 'monospace' }}>AOSP</span>
-          <span className="text-xs" style={{ color: '#7A96A8', fontFamily: 'monospace' }}>/</span>
-          <span className="text-xs font-semibold" style={{ color: '#2C3947', fontFamily: 'monospace' }}>
+          <span className="text-xs font-bold" style={{ color: '#547A95', fontFamily: "'Nunito', sans-serif" }}>AOSP</span>
+          <span className="text-xs" style={{ color: '#7A96A8', fontFamily: "'Nunito', sans-serif" }}>/</span>
+          <span className="text-xs font-semibold" style={{ color: '#2C3947', fontFamily: "'Nunito', sans-serif" }}>
             Camera Framework Explorer
           </span>
         </div>
 
         <div className="flex-1" />
 
-        <span className="text-xs hidden md:block" style={{ color: '#7A96A8', fontFamily: 'monospace' }}>
+        <span className="text-xs hidden md:block" style={{ color: '#7A96A8', fontFamily: "'Nunito', sans-serif" }}>
           scroll to zoom · drag to pan · click node to inspect
         </span>
 
@@ -103,7 +103,7 @@ export default function App() {
               background: '#F0F4F8',
               border: '1px solid #C5CFD8',
               color: '#2C3947',
-              fontFamily: 'monospace',
+              fontFamily: "'Nunito', sans-serif",
               width: 220,
               transition: 'border-color 0.15s',
             }}
@@ -149,7 +149,7 @@ export default function App() {
                 background: '#DFE8EE',
                 border: '1px solid #C5CFD8',
                 color: '#547A95',
-                fontFamily: 'monospace',
+                fontFamily: "'Nunito', sans-serif",
               }}
             >
               Click any node to inspect
