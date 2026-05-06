@@ -3,9 +3,15 @@ import { Search, X, Layers } from 'lucide-react';
 import ArchMap from './components/ArchMap';
 import Sidebar from './components/Sidebar';
 import DetailPanel from './components/DetailPanel';
-import { NODES, EDGES } from './data/cameraData';
+import * as cameraModuleData from './data/cameraData';
+import * as inputModuleData from './data/inputData';
 import { MODULES } from './data/modules';
 import './App.css';
+
+const MODULE_DATA = {
+  camera: cameraModuleData,
+  input:  inputModuleData,
+};
 
 function ModuleTabs({ active, onChange }) {
   return (
@@ -53,6 +59,9 @@ export default function App() {
   const [activeModule, setActiveModule] = useState('camera');
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
+  const { NODES, EDGES, LAYERS, CANVAS_W, CANVAS_H, NODE_W, NODE_H } =
+    MODULE_DATA[activeModule] ?? MODULE_DATA.camera;
+
   const handleNodeClick = (node) => {
     setSelectedNode(prev => prev?.id === node.id ? null : node);
   };
@@ -66,7 +75,7 @@ export default function App() {
       ...n,
       _dimmed: !n.label.toLowerCase().includes(q) && !n.path.toLowerCase().includes(q),
     }));
-  }, [search]);
+  }, [search, NODES]);
 
   return (
     <div className="flex flex-col h-screen overflow-hidden" style={{ background: '#E8EDF2', color: '#2C3947' }}>
@@ -141,6 +150,11 @@ export default function App() {
             edges={EDGES}
             selectedNode={selectedNode}
             onNodeClick={handleNodeClick}
+            layers={LAYERS}
+            canvasW={CANVAS_W}
+            canvasH={CANVAS_H}
+            nodeW={NODE_W}
+            nodeH={NODE_H}
           />
         </main>
 

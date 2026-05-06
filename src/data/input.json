@@ -1,0 +1,225 @@
+{
+  "id": "input",
+  "label": "Pointing Device Subsystem",
+  "layout": {
+    "canvasWidth": 900,
+    "nodeWidth": 148,
+    "nodeHeight": 34,
+    "nodesPerRow": 5,
+    "gapX": 12,
+    "gapY": 12,
+    "layerPadTop": 46,
+    "layerPadBottom": 14
+  },
+  "layers": [
+    { "id": "app",      "name": "Application",                                              "color": "#2A6DB5", "bg": "#E3EFF9" },
+    { "id": "java",     "name": "Java API  •  android.view / android.hardware.input",       "color": "#6040A8", "bg": "#EDE8FA" },
+    { "id": "service",  "name": "InputManagerService  •  InputFlinger",                     "color": "#3A5870", "bg": "#DCE6EE" },
+    { "id": "hal_if",   "name": "HAL AIDL Interface  •  android.hardware.input",            "color": "#C47800", "bg": "#FFF1C4" },
+    { "id": "hal_impl", "name": "HAL Implementation",                                       "color": "#C83838", "bg": "#FCD8D8" },
+    { "id": "kernel",   "name": "Linux Kernel  •  Input / HID Subsystem",                   "color": "#4A6828", "bg": "#E0EDD1" },
+    { "id": "hw",       "name": "Hardware",                                                 "color": "#A83860", "bg": "#F7E0E9" }
+  ],
+  "nodes": [
+    {
+      "id": "generic_app", "label": "Generic App", "layer": "app",
+      "path": "",
+      "files": [],
+      "description": "Any Android application receiving pointer events via onTouchEvent() or onGenericMotionEvent(). Handles mouse, stylus, and touchpad input through the View hierarchy."
+    },
+    {
+      "id": "pointer_cap_app", "label": "PointerCapture App", "layer": "app",
+      "path": "",
+      "files": [],
+      "description": "Application that requests pointer capture mode (e.g., games, CAD tools). Receives raw relative mouse deltas via requestPointerCapture() instead of absolute screen coordinates."
+    },
+    {
+      "id": "a11y_app", "label": "AccessibilitySvc", "layer": "app",
+      "path": "frameworks/base/core/java/android/accessibilityservice",
+      "files": ["AccessibilityService.java", "GestureDescription.java"],
+      "description": "Accessibility service that can intercept, observe, and inject input events globally. Used by screen readers, switch access, and assistive technology applications."
+    },
+
+    {
+      "id": "input_mgr_java", "label": "InputManager", "layer": "java",
+      "path": "frameworks/base/core/java/android/hardware/input",
+      "files": ["InputManager.java", "InputManagerGlobal.java"],
+      "description": "Top-level Java API for querying available input devices, registering device change listeners, adjusting pointer speed, and injecting synthetic events (requires permission)."
+    },
+    {
+      "id": "input_device", "label": "InputDevice", "layer": "java",
+      "path": "frameworks/base/core/java/android/view",
+      "files": ["InputDevice.java"],
+      "description": "Describes a physical input device's capabilities: source types (mouse, touchpad, stylus), reported axes (X, Y, pressure, tilt, scroll), and button state."
+    },
+    {
+      "id": "motion_event", "label": "MotionEvent", "layer": "java",
+      "path": "frameworks/base/core/java/android/view",
+      "files": ["MotionEvent.java"],
+      "description": "Immutable event object carrying pointer coordinates, pressure, tool type (finger/mouse/stylus/eraser), action code, and historical samples for a single pointer interaction."
+    },
+    {
+      "id": "pointer_icon", "label": "PointerIcon", "layer": "java",
+      "path": "frameworks/base/core/java/android/view",
+      "files": ["PointerIcon.java"],
+      "description": "Represents the visual cursor shape for mouse and touchpad input. Applications set per-View icons via setPointerIcon(); the framework composites the final cursor overlay via SurfaceFlinger."
+    },
+    {
+      "id": "view_root_impl", "label": "ViewRootImpl", "layer": "java",
+      "path": "frameworks/base/core/java/android/view",
+      "files": ["ViewRootImpl.java", "InputEventReceiver.java"],
+      "description": "Root of the View hierarchy for a window. Owns the InputChannel socket endpoint, receives MotionEvents from InputDispatcher, and dispatches them down the View tree."
+    },
+
+    {
+      "id": "input_mgr_svc", "label": "InputManagerSvc", "layer": "service",
+      "path": "frameworks/base/services/core/java/com/android/server/input",
+      "files": ["InputManagerService.java", "NativeInputManagerService.java"],
+      "description": "System service (runs in system_server) that bootstraps InputFlinger, manages pointer icon resources, applies screen-size/rotation transforms, and serves as the Binder endpoint for Java InputManager clients."
+    },
+    {
+      "id": "input_reader", "label": "InputReader", "layer": "service",
+      "path": "frameworks/native/services/inputflinger/reader",
+      "files": ["InputReader.cpp", "InputReader.h", "EventHub.cpp"],
+      "description": "InputFlinger component that continuously reads raw input_event structs from /dev/input/eventX via EventHub. Applies per-device mappers (PointerInputMapper, TouchInputMapper, KeyboardInputMapper) to produce cooked InputEvents."
+    },
+    {
+      "id": "input_classifier", "label": "InputClassifier", "layer": "service",
+      "path": "frameworks/native/services/inputflinger",
+      "files": ["InputClassifier.cpp", "InputClassifier.h"],
+      "description": "Middleware pipeline stage between InputReader and InputDispatcher. Delegates to the IInputProcessor HAL for ML-based palm rejection and gesture classification, then forwards classified events downstream."
+    },
+    {
+      "id": "input_dispatcher", "label": "InputDispatcher", "layer": "service",
+      "path": "frameworks/native/services/inputflinger/dispatcher",
+      "files": ["InputDispatcher.cpp", "InputDispatcher.h"],
+      "description": "Receives classified events from InputClassifier, performs focus-based window targeting via WindowManagerService, tracks ANR timeouts, and delivers events to apps through InputChannel socket pairs."
+    },
+    {
+      "id": "ptr_controller", "label": "PointerController", "layer": "service",
+      "path": "frameworks/native/services/inputflinger",
+      "files": ["PointerController.cpp", "PointerController.h"],
+      "description": "Manages the on-screen mouse cursor position, acceleration, pointer speed, and fade-out animation. Communicates with SurfaceFlinger to composite the cursor sprite layer above all app content."
+    },
+
+    {
+      "id": "i_input_processor", "label": "IInputProcessor", "layer": "hal_if",
+      "path": "hardware/interfaces/input/processor/aidl/android/hardware/input/processor",
+      "files": ["IInputProcessor.aidl"],
+      "description": "AIDL interface (Android 13+) for HAL-backed input event classification. Vendor ML models implement this interface to label events as TOOL_TYPE_PALM or adjust touch classifications for device-specific accuracy."
+    },
+    {
+      "id": "i_input_classifier", "label": "IInputClassifier", "layer": "hal_if",
+      "path": "hardware/interfaces/input/classifier/aidl/android/hardware/input/classifier",
+      "files": ["IInputClassifier.aidl"],
+      "description": "Legacy HIDL/AIDL interface (Android 10–12) for classifying touch contacts as palm touches. Superseded by IInputProcessor in Android 13 but still supported for backward compatibility."
+    },
+
+    {
+      "id": "default_processor", "label": "Default Processor", "layer": "hal_impl",
+      "path": "hardware/interfaces/input/processor/aidl/default",
+      "files": ["InputProcessor.cpp"],
+      "description": "AOSP reference IInputProcessor implementation that passes events through unmodified. OEMs and SoC vendors replace this with ML-based implementations for palm rejection and stylus pressure calibration."
+    },
+    {
+      "id": "vendor_input_hal", "label": "Vendor Input HAL", "layer": "hal_impl",
+      "path": "vendor/",
+      "files": ["(vendor-specific)"],
+      "description": "SoC/OEM-specific input processor implementing IInputProcessor. Provides on-device ML palm rejection, high-accuracy stylus classification, or touchpad gesture recognition tailored to the device's sensor hardware."
+    },
+
+    {
+      "id": "evdev", "label": "evdev", "layer": "kernel",
+      "path": "kernel/drivers/input",
+      "files": ["evdev.c", "input.c"],
+      "description": "Linux input event interface driver. Exposes /dev/input/eventX character devices that multiplex input_event structs from all registered input devices. Consumed by EventHub inside InputReader."
+    },
+    {
+      "id": "hid_core", "label": "HID Core", "layer": "kernel",
+      "path": "kernel/drivers/hid",
+      "files": ["hid-core.c", "hid-input.c"],
+      "description": "Generic HID kernel subsystem. Parses HID report descriptors, maps HID usage codes to Linux input event codes, and provides transport-agnostic APIs for USB, Bluetooth, and I2C HID drivers."
+    },
+    {
+      "id": "usbhid", "label": "USB HID Driver", "layer": "kernel",
+      "path": "kernel/drivers/hid",
+      "files": ["usbhid/hid-core.c", "usbhid/usbmouse.c"],
+      "description": "USB transport driver for HID-compliant devices (wired mice, USB touchpads). Submits USB interrupt-transfer URBs to the USB core and feeds received HID reports to hid-core for decoding."
+    },
+    {
+      "id": "i2c_hid", "label": "I2C-HID Driver", "layer": "kernel",
+      "path": "kernel/drivers/hid",
+      "files": ["i2c-hid/i2c-hid-core.c"],
+      "description": "I2C transport driver for built-in precision touchpads (Microsoft PTP) and pointing sticks. Reads HID reports over the I2C bus via interrupt-driven transfers and feeds them to hid-core."
+    },
+    {
+      "id": "hid_multitouch", "label": "hid-multitouch", "layer": "kernel",
+      "path": "kernel/drivers/hid",
+      "files": ["hid-multitouch.c"],
+      "description": "HID multitouch personality driver. Parses MT-A/MT-B protocol touch contact reports, tracks contact IDs across frames, and emits ABS_MT_* events for multi-finger touchpad and stylus input."
+    },
+
+    {
+      "id": "usb_mouse_hw", "label": "USB Mouse", "layer": "hw",
+      "path": "",
+      "files": [],
+      "description": "Wired USB HID mouse. Reports relative X/Y delta, button clicks, and scroll wheel over USB interrupt transfers at 125–8000 Hz depending on the device's polling rate."
+    },
+    {
+      "id": "bt_mouse_hw", "label": "Bluetooth Mouse", "layer": "hw",
+      "path": "",
+      "files": [],
+      "description": "Bluetooth Classic or BLE HID-over-GATT mouse. Delivers button and relative motion reports over the Bluetooth HID profile; handled by the btusb/hid-bluetooth kernel driver chain."
+    },
+    {
+      "id": "touchpad_hw", "label": "Touchpad (I2C)", "layer": "hw",
+      "path": "",
+      "files": [],
+      "description": "Capacitive multitouch touchpad connected over I2C (e.g., Synaptics, ALPS, Elan). Implements Microsoft Precision Touchpad (PTP) HID descriptor for hardware-assisted palm rejection and gesture support."
+    },
+    {
+      "id": "stylus_hw", "label": "Stylus/Digitizer", "layer": "hw",
+      "path": "",
+      "files": [],
+      "description": "Active electromagnetic stylus (e.g., Wacom EMR, USI 2.0). Reports absolute X/Y position, pressure (up to 4096 levels), tilt angle, and barrel button state via a dedicated digitizer controller."
+    },
+    {
+      "id": "trackball_hw", "label": "Trackball", "layer": "hw",
+      "path": "",
+      "files": [],
+      "description": "Optical or mechanical trackball. Reports relative ball motion and button clicks as standard HID relative mouse events; uses the same usbhid/hid-core kernel path as a conventional mouse."
+    }
+  ],
+  "edges": [
+    { "source": "generic_app",        "target": "motion_event",       "label": "onTouchEvent",   "important": true  },
+    { "source": "motion_event",        "target": "view_root_impl",     "label": "dispatch",       "important": true  },
+    { "source": "view_root_impl",      "target": "input_dispatcher",   "label": "InputChannel",   "important": true  },
+    { "source": "input_dispatcher",    "target": "input_classifier",   "label": "classify",       "important": true  },
+    { "source": "input_classifier",    "target": "input_reader",       "label": "raw events",     "important": true  },
+    { "source": "input_reader",        "target": "evdev",              "label": "read()",         "important": true  },
+    { "source": "evdev",               "target": "hid_core",           "label": "input_event",    "important": true  },
+    { "source": "hid_core",            "target": "usb_mouse_hw",       "label": "USB HID",        "important": true  },
+
+    { "source": "generic_app",         "target": "input_mgr_java",     "label": "Java API",       "important": false },
+    { "source": "pointer_cap_app",     "target": "input_mgr_java",     "label": "capturePointer", "important": false },
+    { "source": "a11y_app",            "target": "input_mgr_java",     "label": "injectEvent",    "important": false },
+    { "source": "input_mgr_java",      "target": "input_device",       "label": "getDevice()",    "important": false },
+    { "source": "input_mgr_java",      "target": "input_mgr_svc",      "label": "Binder IPC",     "important": false },
+    { "source": "view_root_impl",      "target": "pointer_icon",       "label": "setPointerIcon", "important": false },
+    { "source": "input_mgr_svc",       "target": "input_reader",       "label": "start",          "important": false },
+    { "source": "input_mgr_svc",       "target": "ptr_controller",     "label": "cursor",         "important": false },
+    { "source": "input_classifier",    "target": "i_input_processor",  "label": "AIDL",           "important": false },
+    { "source": "i_input_processor",   "target": "default_processor",  "label": "impl",           "important": false },
+    { "source": "i_input_processor",   "target": "vendor_input_hal",   "label": "impl",           "important": false },
+    { "source": "i_input_classifier",  "target": "default_processor",  "label": "legacy",         "important": false },
+    { "source": "evdev",               "target": "usbhid",             "label": "driver",         "important": false },
+    { "source": "evdev",               "target": "i2c_hid",            "label": "driver",         "important": false },
+    { "source": "hid_core",            "target": "hid_multitouch",     "label": "MT reports",     "important": false },
+    { "source": "usbhid",              "target": "usb_mouse_hw",       "label": "USB",            "important": false },
+    { "source": "usbhid",              "target": "trackball_hw",       "label": "USB",            "important": false },
+    { "source": "i2c_hid",             "target": "touchpad_hw",        "label": "I2C",            "important": false },
+    { "source": "hid_multitouch",      "target": "touchpad_hw",        "label": "MT",             "important": false },
+    { "source": "hid_core",            "target": "bt_mouse_hw",        "label": "BT HID",         "important": false },
+    { "source": "hid_core",            "target": "stylus_hw",          "label": "HID",            "important": false }
+  ]
+}

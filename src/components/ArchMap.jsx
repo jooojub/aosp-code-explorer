@@ -1,38 +1,36 @@
 import { useRef, useEffect, useMemo, useState, useCallback } from 'react';
 import * as d3 from 'd3';
-import { CANVAS_W, CANVAS_H, NODE_W, NODE_H, LAYERS, LEFT_PAD } from '../data/cameraData';
 
-const R_LANE = CANVAS_W - 18;
 const MINIMAP_W = 160;
 
 // ─── Edge routing ────────────────────────────────────────────────────────────
 
-function edgePath(src, tgt, layerMap) {
+function edgePath(src, tgt, layerMap, nodeW, nodeH, rLane) {
   if (src.layer === tgt.layer && src.y === tgt.y) {
-    const sx = src.x + NODE_W, sy = src.y + NODE_H / 2;
-    const tx = tgt.x,          ty = tgt.y + NODE_H / 2;
+    const sx = src.x + nodeW, sy = src.y + nodeH / 2;
+    const tx = tgt.x,          ty = tgt.y + nodeH / 2;
     const mx = (sx + tx) / 2;
     return `M${sx},${sy} C${mx},${sy} ${mx},${ty} ${tx},${ty}`;
   }
   if (src.layer === tgt.layer) {
-    const sx = src.x + NODE_W, sy = src.y + NODE_H / 2;
-    const tx = tgt.x + NODE_W, ty = tgt.y + NODE_H / 2;
-    return `M${sx},${sy} C${R_LANE},${sy} ${R_LANE},${ty} ${tx},${ty}`;
+    const sx = src.x + nodeW, sy = src.y + nodeH / 2;
+    const tx = tgt.x + nodeW, ty = tgt.y + nodeH / 2;
+    return `M${sx},${sy} C${rLane},${sy} ${rLane},${ty} ${tx},${ty}`;
   }
   const srcL = layerMap[src.layer];
   const tgtL = layerMap[tgt.layer];
   const goDown = tgtL.y > srcL.y;
-  const sx = src.x + NODE_W / 2;
-  const tx = tgt.x + NODE_W / 2;
+  const sx = src.x + nodeW / 2;
+  const tx = tgt.x + nodeW / 2;
   if (goDown) {
-    const sy = src.y + NODE_H;
+    const sy = src.y + nodeH;
     const ty = tgt.y;
     const c1y = srcL.y + srcL.height - 6;
     const c2y = tgtL.y + 20;
     return `M${sx},${sy} C${sx},${c1y} ${tx},${c2y} ${tx},${ty}`;
   } else {
     const sy = src.y;
-    const ty = tgt.y + NODE_H;
+    const ty = tgt.y + nodeH;
     const c1y = srcL.y + 20;
     const c2y = tgtL.y + tgtL.height - 6;
     return `M${sx},${sy} C${sx},${c1y} ${tx},${c2y} ${tx},${ty}`;
@@ -41,12 +39,12 @@ function edgePath(src, tgt, layerMap) {
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function LayerBand({ layer }) {
+function LayerBand({ layer, canvasW }) {
   return (
     <g>
-      <rect x={0} y={layer.y} width={CANVAS_W} height={layer.height} fill={layer.bg} />
-      <rect x={0} y={layer.y} width={CANVAS_W} height={2} fill={layer.color} opacity={0.6} />
-      <rect x={0} y={layer.y + layer.height - 1} width={CANVAS_W} height={1} fill={layer.color} opacity={0.25} />
+      <rect x={0} y={layer.y} width={canvasW} height={layer.height} fill={layer.bg} />
+      <rect x={0} y={layer.y} width={canvasW} height={2} fill={layer.color} opacity={0.6} />
+      <rect x={0} y={layer.y + layer.height - 1} width={canvasW} height={1} fill={layer.color} opacity={0.25} />
       <text
         x={10} y={layer.y + 23}
         fill={layer.color} fontSize={13} fontFamily="'Nunito',sans-serif"
@@ -59,11 +57,11 @@ function LayerBand({ layer }) {
   );
 }
 
-function EdgePath({ edge, nodeMap, layerMap, dimmed }) {
+function EdgePath({ edge, nodeMap, layerMap, dimmed, nodeW, nodeH, rLane }) {
   const src = nodeMap[edge.source];
   const tgt = nodeMap[edge.target];
   if (!src || !tgt) return null;
-  const d = edgePath(src, tgt, layerMap);
+  const d = edgePath(src, tgt, layerMap, nodeW, nodeH, rLane);
   const opacity = dimmed ? 0.07 : (edge.important ? 0.75 : 0.35);
   const strokeW = edge.important ? 1.6 : 1.0;
   return (
@@ -74,7 +72,7 @@ function EdgePath({ edge, nodeMap, layerMap, dimmed }) {
   );
 }
 
-function NodeBox({ node, isSelected, isConnected, isHovered, hasSelection, onClick, onHover }) {
+function NodeBox({ node, isSelected, isConnected, isHovered, hasSelection, onClick, onHover, nodeW, nodeH }) {
   const dimmed = hasSelection && !isSelected && !isConnected;
   return (
     <g
@@ -86,17 +84,17 @@ function NodeBox({ node, isSelected, isConnected, isHovered, hasSelection, onCli
       opacity={dimmed ? 0.2 : 1}
     >
       {isSelected && (
-        <rect x={-3} y={-3} width={NODE_W + 6} height={NODE_H + 6} rx={6}
+        <rect x={-3} y={-3} width={nodeW + 6} height={nodeH + 6} rx={6}
           fill={node.color} opacity={0.15} />
       )}
       <rect
-        width={NODE_W} height={NODE_H} rx={4}
+        width={nodeW} height={nodeH} rx={4}
         fill={isSelected ? node.color + '20' : (isHovered ? node.color + '0d' : '#ffffff')}
         stroke={isSelected ? node.color : (isHovered ? node.color : node.color + '99')}
         strokeWidth={isSelected ? 2 : (isConnected ? 1.5 : 1)}
       />
       <text
-        x={NODE_W / 2} y={NODE_H / 2}
+        x={nodeW / 2} y={nodeH / 2}
         textAnchor="middle" dominantBaseline="middle"
         fill={node.color} fontSize={9.5} fontFamily="'Nunito',sans-serif"
         fontWeight={isSelected ? '700' : '500'}
@@ -110,9 +108,9 @@ function NodeBox({ node, isSelected, isConnected, isHovered, hasSelection, onCli
 
 // ─── Minimap ──────────────────────────────────────────────────────────────────
 
-function Minimap({ transform, svgW, svgH, nodes, onApplyTransform, onFit }) {
-  const mmH = CANVAS_H > 0 ? Math.round(MINIMAP_W * CANVAS_H / CANVAS_W) : 200;
-  const ms = MINIMAP_W / CANVAS_W;
+function Minimap({ transform, svgW, svgH, nodes, onApplyTransform, onFit, layers, canvasW, canvasH, nodeW, nodeH }) {
+  const mmH = canvasH > 0 ? Math.round(MINIMAP_W * canvasH / canvasW) : 200;
+  const ms = MINIMAP_W / canvasW;
 
   const svgRef = useRef(null);
   const draggingRef = useRef(false);
@@ -120,7 +118,6 @@ function Minimap({ transform, svgW, svgH, nodes, onApplyTransform, onFit }) {
   const transformRef = useRef(transform);
   useEffect(() => { transformRef.current = transform; }, [transform]);
 
-  // Viewport rect in minimap coords
   const { k, x, y } = transform;
   const vpX = -x / k * ms;
   const vpY = -y / k * ms;
@@ -142,7 +139,6 @@ function Minimap({ transform, svgW, svgH, nodes, onApplyTransform, onFit }) {
       dragStartRef.current = { mx, my, tx: cx, ty: cy };
       e.preventDefault();
     } else {
-      // Click to jump: center viewport on clicked canvas point
       const canvasX = mx / ms;
       const canvasY = my / ms;
       onApplyTransform(svgW / 2 - ck * canvasX, svgH / 2 - ck * canvasY, ck, true);
@@ -208,7 +204,7 @@ function Minimap({ transform, svgW, svgH, nodes, onApplyTransform, onFit }) {
         style={{ display: 'block', cursor: 'crosshair' }}
       >
         <rect width={MINIMAP_W} height={mmH} fill="#E8EDF2" />
-        {LAYERS.map(l => (
+        {layers.map(l => (
           <g key={l.id}>
             <rect x={0} y={l.y * ms} width={MINIMAP_W} height={l.height * ms} fill={l.bg} />
             <rect x={0} y={l.y * ms} width={MINIMAP_W} height={Math.max(0.5, 2 * ms)} fill={l.color} opacity={0.6} />
@@ -217,11 +213,10 @@ function Minimap({ transform, svgW, svgH, nodes, onApplyTransform, onFit }) {
         {nodes.map(n => (
           <rect key={n.id}
             x={n.x * ms} y={n.y * ms}
-            width={Math.max(2, NODE_W * ms)} height={Math.max(1, NODE_H * ms)}
+            width={Math.max(2, nodeW * ms)} height={Math.max(1, nodeH * ms)}
             fill={n.color} opacity={0.55} rx={0.5}
           />
         ))}
-        {/* Viewport rect */}
         <rect
           x={vpX} y={vpY}
           width={Math.max(4, vpW)} height={Math.max(4, vpH)}
@@ -237,7 +232,7 @@ function Minimap({ transform, svgW, svgH, nodes, onApplyTransform, onFit }) {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export default function ArchMap({ nodes, edges, selectedNode, onNodeClick }) {
+export default function ArchMap({ nodes, edges, selectedNode, onNodeClick, layers, canvasW, canvasH, nodeW, nodeH }) {
   const svgRef = useRef(null);
   const gRef = useRef(null);
   const zoomRef = useRef(null);
@@ -245,6 +240,8 @@ export default function ArchMap({ nodes, edges, selectedNode, onNodeClick }) {
   const [zoomPct, setZoomPct] = useState(100);
   const [zoomTransform, setZoomTransform] = useState({ k: 1, x: 0, y: 0 });
   const [svgSize, setSvgSize] = useState({ w: 800, h: 600 });
+
+  const rLane = canvasW - 18;
 
   useEffect(() => {
     const svgEl = svgRef.current;
@@ -266,9 +263,9 @@ export default function ArchMap({ nodes, edges, selectedNode, onNodeClick }) {
     const fit = () => {
       const { clientWidth: W, clientHeight: H } = svgEl;
       setSvgSize({ w: W, h: H });
-      const scale = Math.min(W / CANVAS_W, H / CANVAS_H) * 0.9;
-      const tx = (W - CANVAS_W * scale) / 2;
-      const ty = (H - CANVAS_H * scale) / 2 + 10;
+      const scale = Math.min(W / canvasW, H / canvasH) * 0.9;
+      const tx = (W - canvasW * scale) / 2;
+      const ty = (H - canvasH * scale) / 2 + 10;
       d3.select(svgEl).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
     };
 
@@ -278,7 +275,7 @@ export default function ArchMap({ nodes, edges, selectedNode, onNodeClick }) {
       d3.select(svgEl).on('.zoom', null);
       window.removeEventListener('resize', fit);
     };
-  }, []);
+  }, [canvasW, canvasH]);
 
   const changeZoom = useCallback((factor) => {
     const svgEl = svgRef.current;
@@ -292,12 +289,12 @@ export default function ArchMap({ nodes, edges, selectedNode, onNodeClick }) {
     const zoom = zoomRef.current;
     if (!svgEl || !zoom) return;
     const { clientWidth: W, clientHeight: H } = svgEl;
-    const scale = Math.min(W / CANVAS_W, H / CANVAS_H) * 0.9;
-    const tx = (W - CANVAS_W * scale) / 2;
-    const ty = (H - CANVAS_H * scale) / 2 + 10;
+    const scale = Math.min(W / canvasW, H / canvasH) * 0.9;
+    const tx = (W - canvasW * scale) / 2;
+    const ty = (H - canvasH * scale) / 2 + 10;
     d3.select(svgEl).transition().duration(250)
       .call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
-  }, []);
+  }, [canvasW, canvasH]);
 
   const handleApplyTransform = useCallback((tx, ty, k, animated) => {
     const svgEl = svgRef.current;
@@ -312,7 +309,7 @@ export default function ArchMap({ nodes, edges, selectedNode, onNodeClick }) {
   }, []);
 
   const nodeMap = useMemo(() => Object.fromEntries(nodes.map(n => [n.id, n])), [nodes]);
-  const layerMap = useMemo(() => Object.fromEntries(LAYERS.map(l => [l.id, l])), []);
+  const layerMap = useMemo(() => Object.fromEntries(layers.map(l => [l.id, l])), [layers]);
 
   const connectedIds = useMemo(() => {
     if (!selectedNode) return new Set();
@@ -349,15 +346,16 @@ export default function ArchMap({ nodes, edges, selectedNode, onNodeClick }) {
           </marker>
         </defs>
         <g ref={gRef}>
-          <rect x={0} y={0} width={CANVAS_W} height={CANVAS_H} fill="#E8EDF2" />
-          {LAYERS.map(layer => <LayerBand key={layer.id} layer={layer} />)}
+          <rect x={0} y={0} width={canvasW} height={canvasH} fill="#E8EDF2" />
+          {layers.map(layer => <LayerBand key={layer.id} layer={layer} canvasW={canvasW} />)}
           {edges.map(edge => {
             const isConnectedEdge = hasSelection &&
               activeIds.has(edge.source) && activeIds.has(edge.target);
             const dimmed = hasSelection && !isConnectedEdge;
             return (
               <EdgePath key={`${edge.source}→${edge.target}`}
-                edge={edge} nodeMap={nodeMap} layerMap={layerMap} dimmed={dimmed} />
+                edge={edge} nodeMap={nodeMap} layerMap={layerMap} dimmed={dimmed}
+                nodeW={nodeW} nodeH={nodeH} rLane={rLane} />
             );
           })}
           {nodes.map(node => (
@@ -367,14 +365,13 @@ export default function ArchMap({ nodes, edges, selectedNode, onNodeClick }) {
               isHovered={hovered === node.id}
               hasSelection={hasSelection}
               onClick={onNodeClick} onHover={handleHover}
-            />
+              nodeW={nodeW} nodeH={nodeH} />
           ))}
         </g>
       </svg>
 
       {/* Top-right controls: zoom + minimap */}
       <div className="absolute top-3 right-3 flex flex-col gap-2" style={{ zIndex: 10 }}>
-        {/* Zoom controls */}
         <div
           className="flex items-center gap-1"
           style={{
@@ -400,13 +397,15 @@ export default function ArchMap({ nodes, edges, selectedNode, onNodeClick }) {
           >+</button>
         </div>
 
-        {/* Minimap */}
         <Minimap
           transform={zoomTransform}
           svgW={svgSize.w} svgH={svgSize.h}
           nodes={nodes}
           onApplyTransform={handleApplyTransform}
           onFit={resetZoom}
+          layers={layers}
+          canvasW={canvasW} canvasH={canvasH}
+          nodeW={nodeW} nodeH={nodeH}
         />
       </div>
     </div>
