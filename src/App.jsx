@@ -5,12 +5,14 @@ import Sidebar from './components/Sidebar';
 import DetailPanel from './components/DetailPanel';
 import * as cameraModuleData from './data/cameraData';
 import * as inputModuleData from './data/inputData';
+import * as pointerModuleData from './data/pointerData';
 import { MODULES } from './data/modules';
 import './App.css';
 
 const MODULE_DATA = {
-  camera: cameraModuleData,
-  input:  inputModuleData,
+  camera:  cameraModuleData,
+  input:   inputModuleData,
+  pointer: pointerModuleData,
 };
 
 function ModuleTabs({ active, onChange }) {

@@ -1,0 +1,227 @@
+{
+  "id": "pointer",
+  "label": "Pointing Device (Remote)",
+  "layout": {
+    "canvasWidth": 900,
+    "nodeWidth": 148,
+    "nodeHeight": 34,
+    "nodesPerRow": 5,
+    "gapX": 12,
+    "gapY": 12,
+    "layerPadTop": 46,
+    "layerPadBottom": 14
+  },
+  "layers": [
+    { "id": "app",      "name": "Application  •  Android TV / Leanback",               "color": "#2A6DB5", "bg": "#E3EFF9" },
+    { "id": "java",     "name": "Java API  •  android.view / InputManager",             "color": "#6040A8", "bg": "#EDE8FA" },
+    { "id": "service",  "name": "InputFlinger  •  PointerController",                   "color": "#3A5870", "bg": "#DCE6EE" },
+    { "id": "bt_fw",    "name": "Bluetooth Framework  •  Fluoride / HOGP",              "color": "#0E6B9E", "bg": "#D6EEF8" },
+    { "id": "hal_if",   "name": "HAL AIDL Interface  •  android.hardware.bluetooth",    "color": "#C47800", "bg": "#FFF1C4" },
+    { "id": "hal_impl", "name": "HAL Implementation",                                   "color": "#C83838", "bg": "#FCD8D8" },
+    { "id": "kernel",   "name": "Linux Kernel  •  HID / Bluetooth Drivers",             "color": "#4A6828", "bg": "#E0EDD1" },
+    { "id": "hw",       "name": "Hardware",                                             "color": "#A83860", "bg": "#F7E0E9" }
+  ],
+  "nodes": [
+    {
+      "id": "tv_app", "label": "Android TV App", "layer": "app",
+      "path": "",
+      "files": [],
+      "description": "Android TV application (e.g., streaming, games) that receives both KeyEvents from D-pad navigation and MotionEvents from pointer-capable remotes (gyroscope/air-mouse)."
+    },
+    {
+      "id": "leanback_ui", "label": "Leanback Library", "layer": "app",
+      "path": "frameworks/support/leanback",
+      "files": ["BaseSupportFragment.java", "BrowseFragment.java"],
+      "description": "AndroidX Leanback library providing TV-optimized UI widgets. Handles pointer cursor rendering over focusable items and bridges pointer MotionEvents with D-pad focus logic."
+    },
+    {
+      "id": "tv_launcher", "label": "TV Launcher", "layer": "app",
+      "path": "packages/apps/TvSettings",
+      "files": ["MainFragment.java"],
+      "description": "Android TV home launcher. Uses Leanback Browse/Row fragments and responds to remote D-pad KeyEvents and pointer MotionEvents for home-screen navigation."
+    },
+
+    {
+      "id": "input_mgr_java", "label": "InputManager", "layer": "java",
+      "path": "frameworks/base/core/java/android/hardware/input",
+      "files": ["InputManager.java", "InputManagerGlobal.java"],
+      "description": "Java API for querying connected input devices (remote controls, gamepads) and adjusting pointer speed. TV apps use this to detect when a pointer-capable remote is connected."
+    },
+    {
+      "id": "motion_event", "label": "MotionEvent", "layer": "java",
+      "path": "frameworks/base/core/java/android/view",
+      "files": ["MotionEvent.java"],
+      "description": "Event object carrying absolute pointer coordinates (from gyro remote) or relative scroll deltas with source=SOURCE_MOUSE. TV apps dispatch this to Leanback's cursor-aware views."
+    },
+    {
+      "id": "key_event", "label": "KeyEvent", "layer": "java",
+      "path": "frameworks/base/core/java/android/view",
+      "files": ["KeyEvent.java"],
+      "description": "Event object for D-pad (KEYCODE_DPAD_*), OK/ENTER, back, and media key presses from any remote control. Traditional IR remotes produce only KeyEvents, not MotionEvents."
+    },
+    {
+      "id": "view_root_impl", "label": "ViewRootImpl", "layer": "java",
+      "path": "frameworks/base/core/java/android/view",
+      "files": ["ViewRootImpl.java", "InputEventReceiver.java"],
+      "description": "Root of the View hierarchy for a TV window. Receives both MotionEvents (pointer) and KeyEvents (D-pad) from InputDispatcher via an InputChannel socket pair and dispatches them to the View tree."
+    },
+
+    {
+      "id": "input_mgr_svc", "label": "InputManagerSvc", "layer": "service",
+      "path": "frameworks/base/services/core/java/com/android/server/input",
+      "files": ["InputManagerService.java"],
+      "description": "System service that bootstraps InputFlinger, manages pointer icon resources, and applies display rotation/scale for pointer coordinate transformation on TV screens."
+    },
+    {
+      "id": "input_reader", "label": "InputReader", "layer": "service",
+      "path": "frameworks/native/services/inputflinger/reader",
+      "files": ["InputReader.cpp", "EventHub.cpp", "PointerInputMapper.cpp"],
+      "description": "Reads raw input_event structs from /dev/input/eventX (the uhid virtual device). PointerInputMapper converts relative X/Y from the remote gyro into absolute pointer coordinates and notifies PointerController."
+    },
+    {
+      "id": "input_dispatcher", "label": "InputDispatcher", "layer": "service",
+      "path": "frameworks/native/services/inputflinger/dispatcher",
+      "files": ["InputDispatcher.cpp"],
+      "description": "Routes pointer MotionEvents and D-pad KeyEvents to the TV app's focused window via InputChannel. Applies WindowManagerService focus policy and ANR timeout monitoring."
+    },
+    {
+      "id": "ptr_controller", "label": "PointerController", "layer": "service",
+      "path": "frameworks/native/services/inputflinger",
+      "files": ["PointerController.cpp", "PointerController.h"],
+      "description": "Tracks and renders the on-screen cursor for pointer-capable remotes. Receives absolute coordinates from InputReader, applies acceleration, and composites the cursor sprite via SurfaceFlinger above all TV app content."
+    },
+
+    {
+      "id": "fluoride_stack", "label": "Fluoride Stack", "layer": "bt_fw",
+      "path": "packages/modules/Bluetooth/system",
+      "files": ["main/bte_main.cc", "stack/btm/btm_ble.cc", "gatt/gatt_api.cc"],
+      "description": "Android's userspace Bluetooth stack (Fluoride/Gabeldorsche), running in the com.android.bluetooth process. Handles ACL connections, L2CAP, GATT, and dispatches HID reports from pointer remotes to the appropriate profile handler."
+    },
+    {
+      "id": "hogp_client", "label": "HOGP Client", "layer": "bt_fw",
+      "path": "packages/modules/Bluetooth/android/app/src/com/android/bluetooth/hid",
+      "files": ["HidDeviceService.java", "HidHostNativeInterface.java"],
+      "description": "HID over GATT Profile (HOGP) client implementation for BLE remotes (e.g., Magic Remote in BLE mode). Subscribes to GATT Report Characteristic notifications, receives HID reports, and writes them to the kernel /dev/uhid interface to create a virtual HID input device."
+    },
+    {
+      "id": "hid_host", "label": "BT HID Host", "layer": "bt_fw",
+      "path": "packages/modules/Bluetooth/android/app/src/com/android/bluetooth/hid",
+      "files": ["HidHostService.java", "HidHostNativeInterface.java"],
+      "description": "Classic Bluetooth HID Host profile for BR/EDR remotes. Manages HID channel setup over L2CAP, receives HID interrupt-channel reports from the remote, and forwards them to the kernel via uhid to appear as a standard Linux input device."
+    },
+
+    {
+      "id": "i_bluetooth_hci", "label": "IBluetoothHci", "layer": "hal_if",
+      "path": "hardware/interfaces/bluetooth/aidl/android/hardware/bluetooth",
+      "files": ["IBluetoothHci.aidl", "IBluetoothHciCallbacks.aidl"],
+      "description": "AIDL interface for the Bluetooth HCI (Host Controller Interface) HAL. Provides sendHciCommand() and onHciEventReceived() for the Fluoride stack to exchange raw HCI packets with the BT controller without knowing the physical transport."
+    },
+    {
+      "id": "i_input_proc", "label": "IInputProcessor", "layer": "hal_if",
+      "path": "hardware/interfaces/input/processor/aidl/android/hardware/input/processor",
+      "files": ["IInputProcessor.aidl"],
+      "description": "AIDL interface for HAL-backed input classification. Allows vendor ML models to annotate remote pointer events (e.g., distinguishing intentional gyro movement from jitter) before they are dispatched to TV apps."
+    },
+
+    {
+      "id": "bt_vendor_hal", "label": "BT Vendor HAL", "layer": "hal_impl",
+      "path": "hardware/interfaces/bluetooth/aidl/default",
+      "files": ["BluetoothHci.cpp", "BluetoothHci.h"],
+      "description": "IBluetoothHci HAL implementation. Multiplexes HCI packets between the Fluoride BT stack and the SoC-specific BT kernel driver (btusb, btintel, or qca) via H4/H5/UART transport."
+    },
+    {
+      "id": "default_input_hal", "label": "Default InputHAL", "layer": "hal_impl",
+      "path": "hardware/interfaces/input/processor/aidl/default",
+      "files": ["InputProcessor.cpp"],
+      "description": "Default IInputProcessor implementation that passes remote pointer events through unmodified. OEMs can replace this to apply on-device gyro calibration or jitter filtering specific to their remote hardware."
+    },
+
+    {
+      "id": "btusb_drv", "label": "btusb Driver", "layer": "kernel",
+      "path": "kernel/drivers/bluetooth",
+      "files": ["btusb.c", "btintel.c", "btqca.c"],
+      "description": "USB Bluetooth host controller kernel driver. Handles HCI packet framing over USB bulk/interrupt endpoints. On-SoC variants (btintel, btqca) use UART or PCIe. Exposes a BT socket to userspace for Fluoride HCI access."
+    },
+    {
+      "id": "uhid_drv", "label": "uhid Driver", "layer": "kernel",
+      "path": "kernel/drivers/hid",
+      "files": ["uhid.c"],
+      "description": "User-space HID (uhid) kernel driver. Exposes /dev/uhid so Fluoride (HOGP/HID-Host) can create a virtual HID input device, write HID reports into it, and have the kernel handle report parsing and Linux input event generation transparently."
+    },
+    {
+      "id": "hid_core", "label": "HID Core", "layer": "kernel",
+      "path": "kernel/drivers/hid",
+      "files": ["hid-core.c", "hid-input.c"],
+      "description": "Generic HID kernel subsystem. Parses HID report descriptors from the uhid virtual device (or real BT HID device), maps HID usages (Generic Desktop: X, Y, Buttons) to Linux input event codes, and feeds the input subsystem."
+    },
+    {
+      "id": "evdev", "label": "evdev", "layer": "kernel",
+      "path": "kernel/drivers/input",
+      "files": ["evdev.c", "input.c"],
+      "description": "Linux input event driver. Exposes /dev/input/eventX for the uhid virtual HID device created by the BT stack. EventHub inside InputReader polls this file descriptor and reads REL_X/REL_Y (gyro motion) or KEY_* (button presses) events."
+    },
+    {
+      "id": "ir_lirc", "label": "IR / LIRC Driver", "layer": "kernel",
+      "path": "kernel/drivers/media/rc",
+      "files": ["rc-core.c", "lirc_dev.c", "ir-rc5-decoder.c"],
+      "description": "Linux IR remote control subsystem (LIRC). Decodes infrared signals (RC-5, RC-6, NEC protocols) received by the IR receiver hardware, maps them to KEY_* Linux input events via keymaps, and feeds evdev. Traditional IR remotes (no pointer) use this path exclusively."
+    },
+
+    {
+      "id": "magic_remote", "label": "Magic Remote", "layer": "hw",
+      "path": "",
+      "files": [],
+      "description": "Gyroscope-equipped BLE or RF pointing remote (e.g., LG Magic Remote). Samples the IMU at high rate, computes relative X/Y delta from gyro, and sends HID mouse reports over BLE HOGP or proprietary RF alongside D-pad HID key reports."
+    },
+    {
+      "id": "ble_remote", "label": "BLE HID Remote", "layer": "hw",
+      "path": "",
+      "files": [],
+      "description": "Standard Bluetooth Low Energy HID remote control (Amazon Fire TV Stick remote, Apple TV Siri Remote). Reports D-pad, select, back, and media keys as HID keyboard/consumer-control reports over BLE HOGP. No gyro pointer capability."
+    },
+    {
+      "id": "rf_remote", "label": "RF Remote (2.4G)", "layer": "hw",
+      "path": "",
+      "files": [],
+      "description": "Proprietary 2.4 GHz RF remote (e.g., Nvidia Shield remote, Roku Voice Remote). Uses a USB dongle receiver; the dongle presents as a standard USB HID device in the kernel, so it follows the USB HID path instead of the BT stack."
+    },
+    {
+      "id": "ir_remote", "label": "IR Remote", "layer": "hw",
+      "path": "",
+      "files": [],
+      "description": "Traditional one-way infrared remote control. Emits modulated IR bursts (RC-5, RC-6, or NEC protocol) decoded by the SoC's IR receiver peripheral. Produces D-pad and media KeyEvents only — no pointer/cursor capability."
+    }
+  ],
+  "edges": [
+    { "source": "tv_app",           "target": "motion_event",      "label": "onMotionEvent",   "important": true  },
+    { "source": "motion_event",      "target": "view_root_impl",    "label": "dispatch",        "important": true  },
+    { "source": "view_root_impl",    "target": "input_dispatcher",  "label": "InputChannel",    "important": true  },
+    { "source": "input_dispatcher",  "target": "input_reader",      "label": "events pipeline", "important": true  },
+    { "source": "input_reader",      "target": "evdev",             "label": "read()",          "important": true  },
+    { "source": "fluoride_stack",    "target": "hogp_client",       "label": "BLE HID",         "important": true  },
+    { "source": "hogp_client",       "target": "uhid_drv",          "label": "/dev/uhid",       "important": true  },
+    { "source": "fluoride_stack",    "target": "i_bluetooth_hci",   "label": "AIDL",            "important": true  },
+    { "source": "i_bluetooth_hci",   "target": "bt_vendor_hal",     "label": "impl",            "important": true  },
+    { "source": "bt_vendor_hal",     "target": "btusb_drv",         "label": "HCI",             "important": true  },
+    { "source": "btusb_drv",         "target": "magic_remote",      "label": "BLE",             "important": true  },
+
+    { "source": "tv_app",           "target": "key_event",          "label": "D-pad",           "important": false },
+    { "source": "tv_app",           "target": "input_mgr_java",     "label": "Java API",        "important": false },
+    { "source": "leanback_ui",      "target": "motion_event",       "label": "cursor",          "important": false },
+    { "source": "leanback_ui",      "target": "key_event",          "label": "focus nav",       "important": false },
+    { "source": "tv_launcher",      "target": "key_event",          "label": "D-pad",           "important": false },
+    { "source": "input_mgr_java",   "target": "input_mgr_svc",      "label": "Binder IPC",      "important": false },
+    { "source": "key_event",        "target": "view_root_impl",     "label": "dispatch",        "important": false },
+    { "source": "input_mgr_svc",    "target": "input_reader",       "label": "start",           "important": false },
+    { "source": "input_mgr_svc",    "target": "ptr_controller",     "label": "cursor",          "important": false },
+    { "source": "input_reader",     "target": "ptr_controller",     "label": "pointer pos",     "important": false },
+    { "source": "evdev",            "target": "hid_core",           "label": "input events",    "important": false },
+    { "source": "hid_core",         "target": "uhid_drv",           "label": "transport",       "important": false },
+    { "source": "fluoride_stack",   "target": "hid_host",           "label": "Classic BT HID",  "important": false },
+    { "source": "hid_host",         "target": "uhid_drv",           "label": "/dev/uhid",       "important": false },
+    { "source": "i_input_proc",     "target": "default_input_hal",  "label": "impl",            "important": false },
+    { "source": "btusb_drv",        "target": "ble_remote",         "label": "BLE",             "important": false },
+    { "source": "ir_lirc",          "target": "evdev",              "label": "KEY_*",           "important": false },
+    { "source": "ir_lirc",          "target": "ir_remote",          "label": "IR RX",           "important": false }
+  ]
+}

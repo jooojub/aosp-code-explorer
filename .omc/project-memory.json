@@ -125,16 +125,16 @@
       "type": "file"
     },
     {
+      "path": "src/App.jsx",
+      "accessCount": 6,
+      "lastAccessed": 1778044763895,
+      "type": "file"
+    },
+    {
       "path": "src",
       "accessCount": 4,
       "lastAccessed": 1778035969317,
       "type": "directory"
-    },
-    {
-      "path": "src/App.jsx",
-      "accessCount": 4,
-      "lastAccessed": 1778037092233,
-      "type": "file"
     },
     {
       "path": "src/components/ArchMap.jsx",
@@ -164,6 +164,12 @@
       "path": "src/index.css",
       "accessCount": 3,
       "lastAccessed": 1778028725912,
+      "type": "file"
+    },
+    {
+      "path": "src/data/modules.js",
+      "accessCount": 2,
+      "lastAccessed": 1778044762054,
       "type": "file"
     },
     {
@@ -206,6 +212,18 @@
       "path": "src/loaders/parseModuleData.js",
       "accessCount": 1,
       "lastAccessed": 1778037084525,
+      "type": "file"
+    },
+    {
+      "path": "src/data/pointer.json",
+      "accessCount": 1,
+      "lastAccessed": 1778044751757,
+      "type": "file"
+    },
+    {
+      "path": "src/data/pointerData.js",
+      "accessCount": 1,
+      "lastAccessed": 1778044752857,
       "type": "file"
     }
   ],
